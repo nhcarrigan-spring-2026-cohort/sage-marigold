@@ -1,0 +1,29 @@
+name: sage-marigold CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Frontend Build (If initialized)
+        run: |
+          if [ -f "frontend/package.json" ]; then
+            cd frontend && npm install && npm run build
+          else
+            echo "Frontend not initialized yet. Skipping..."
+          fi
+
+      - name: Backend Build (If initialized)
+        run: |
+          if [ -f "backend/package.json" ]; then
+            cd backend && npm install
+          else
+            echo "Backend not initialized yet. Skipping..."
+          fi
