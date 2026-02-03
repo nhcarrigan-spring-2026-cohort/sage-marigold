@@ -19,7 +19,6 @@ function App() {
       <Route path="/About" element={<About />} />
       <Route path="/Login" element={<Login />} />
     </Routes>
-    <Hero />
     </>
   );
 }
