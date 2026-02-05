@@ -1,0 +1,15 @@
+name: Refactor / Cleanup
+description: Improve code quality without changing functionality
+title: "[REFACTOR]: <title>"
+labels: ["technical-debt"]
+body:
+  - type: textarea
+    id: current-state
+    attributes:
+      label: Current Implementation
+      description: What part of the code is messy or hard to read?
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Proposed Improvement
+      description: How should we rewrite this for better performance or readability?

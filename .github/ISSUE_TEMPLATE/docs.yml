@@ -1,0 +1,10 @@
+name: Documentation Update
+description: Add or update documentation
+title: "[DOCS]: <title>"
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: docs-needed
+    attributes:
+      label: What needs documentation?
+      description: Describe the missing info.

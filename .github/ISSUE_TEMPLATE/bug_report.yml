@@ -1,0 +1,22 @@
+name: Bug Report
+description: Report something that isn't working
+title: "[BUG]: <title>"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What is happening?
+      description: Describe the bug clearly.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: e.g., Chrome, Safari, Codespaces terminal
+  - type: textarea
+    id: fix-suggestion
+    attributes:
+      label: Potential Fix
+      description: If you have an idea of how to fix it, let us know!

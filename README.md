@@ -21,8 +21,6 @@ If the frontend is not yet initialized, follow these steps:
 
 ```bash
 cd frontend
-npm create vite@latest .  # Use the dot to install in current folder!
-# Select React -> JavaScript + SWC
 npm install
 npm run dev    #Frontend will be running at http://localhost:5173
 ```

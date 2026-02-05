@@ -1,0 +1,30 @@
+name: Feature Request
+description: Propose a new feature or UI component
+title: "[FEAT]: <title>"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What is the goal?
+      description: What are we trying to achieve with this feature?
+    validations:
+      required: true
+  - type: textarea
+    id: technical-tasks
+    attributes:
+      label: Technical Tasks
+      description: List the small steps needed (e.g., "Create API route", "Build React component")
+      placeholder: |
+        - [ ] Task 1
+        - [ ] Task 2
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority level
+      options:
+        - Low (Nice to have)
+        - Medium (Needed soon)
+        - High (Critical for MVP)
+    validations:
+      required: true
