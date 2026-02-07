@@ -6,7 +6,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Footer from './components/Footer';
 import Explore from './pages/Explore';
-
+import Donate from './pages/Donate';
 
 
 
@@ -20,6 +20,7 @@ function App() {
         <Route path="/Explore" element={<Explore />} />
         <Route path="/About" element={<About />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/Donate" element={<Donate />} />
       </Routes>
       <Footer />
     </div>
