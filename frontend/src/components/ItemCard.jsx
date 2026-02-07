@@ -1,29 +1,43 @@
-import React from "react";
+import { FaBoxOpen, FaCalendar } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
-const ItemCard = ({ title, description, condition, location, date_posted, image, onRequest }) => {
-    return (
-    <div className="w-full max-w-[420px] overflow-hidden rounded-2xl bg-white shadow-lg">
-      <div className="relative h-52">
+const ItemCard = ({
+  title,
+  description,
+  condition,
+  location,
+  date_posted,
+  image,
+  category,
+  onRequest,
+}) => {
+  return (
+    <div className="bg-white h-full border relative border-gray-200 rounded-xl overflow-hidden gap-4 flex flex-col justify-between hover:shadow-lg transition-shadow">
+      <div className="flex items-center justify-center h-48">
         <img
           src={image}
           alt={title}
-          className="h-full w-full object-cover"
+          className="max-w-full max-h-full object-contain"
         />
+        <span className="bg-emerald-50 border border-emerald-200 text-black font-medium text-xs py-0.5 px-2 w-fit rounded-md overflow-hidden gap-1 justify-center items-center shrink-0 inline-flex left-3 top-3 absolute">
+          {category}
+        </span>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <h3 className="mb-2 text-xl font-bold text-gray-900">
-          {title}
-        </h3>
+      <div className="pb-6 p-4">
+        <h3 className="font-semibold mb-2 line-clamp-1">{title}</h3>
 
-        <p className="mb-4 text-sm leading-relaxed text-gray-600 line-clamp-2">
+        <p className="text-sm text-gray-600 mb-3 line-clamp-22">
           {description}
         </p>
 
         {/* Meta info */}
-        <div className="mb-6 space-y-2 text-sm text-gray-600">
-          <div className="flex items-center gap-2">
+
+        <div className="space-y-2 ">
+          {" "}
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <FaBoxOpen />
             <span>
               Condition:
               <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
@@ -31,26 +45,29 @@ const ItemCard = ({ title, description, condition, location, date_posted, image,
               </span>
             </span>
           </div>
-
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <FaLocationDot />
             <span>{location}</span>
           </div>
-
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <FaCalendar />
             <span>Posted {date_posted}</span>
           </div>
         </div>
+      </div>
 
-        {/* CTA */}
+      {/* CTA */}
+      <div className="flex items-center [.border-t]:pt-6 p-4 pt-0">
         <button
           onClick={onRequest}
-          className="w-full rounded-xl bg-gradient-to-b from-gray-900 to-black py-3 text-sm font-semibold text-white transition hover:opacity-95"
+          className="outline-none inline-flex justify-center items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 py-2 px-4 h-9 w-full bg-emerald-700 text-white hover:bg-emerald-800"
+          type="button"
         >
           Request This Item
         </button>
       </div>
     </div>
-    );
+  );
 };
 
 export default ItemCard;

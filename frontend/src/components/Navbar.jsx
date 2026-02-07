@@ -1,30 +1,28 @@
+import Search from './Search';
 import { memo, useState } from "react";
-import { Link } from "react-router-dom";
-import logoImage from "../assets/project_logo.png";
+import { NavLink,Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+    const getLinkClass = ({ isActive }) => {
+       return `hover:text-gray-600 ${
+      isActive 
+        ? "text-emerald-700 font-semibold border-b-2 border-emerald-700" 
+        : "text-black"
+    }`;
+    }
+
   return (
-    <nav className="relative flex justify-between items-center py-4 px-8 bg-[#f5f5f5] shadow-md">
+    <nav className="flex justify-between sticky top-0 z-50  items-center py-4 px-8 bg-[#f5f5f5] shadow-md">
       <h1 className="text-2xl font-bold">
-        <img src={logoImage} alt="Sage Marigold Logo" className="h-12 w-12 inline mr-2" />
-        <Link className="text-emerald-700 font-cursive! hover:text-gray-600" to="/">
+        <img src="/project_logo.png" alt="Sage Marigold Logo" className="h-12 w-12 inline mr-2" />
+        <Link className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600" to="/">
           HELPING HANDS
         </Link>
       </h1>
-      <div className="hidden md:flex flex-1 mx-8 gap-2">
-        <input
-          type="text"
-          placeholder="Search items..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-2xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
-        />
-        <button className="bg-black text-white px-6 py-2 text-sm font-semibold hover:bg-gray-800">
-          Search
-        </button>
-      </div>
+      <Search   search={search} setSearch={setSearch}  />
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden flex flex-col gap-1 cursor-pointer"
@@ -35,67 +33,77 @@ const Navbar = () => {
       </button>
       <ul className="hidden md:flex gap-6 items-center">
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <Link to="/Donate" className="text-black hover:text-gray-600">
+          <NavLink to="/" end className={getLinkClass}>
+            Home
+          </NavLink>
+        </li>
+        <li className="hover:border-b-2 hover:border-emerald-700">
+          <NavLink to="/Donate" className={getLinkClass}>
             Donate
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <Link to="/About" className="text-black hover:text-gray-600">
+          <NavLink to="/Explore" className={getLinkClass}>
+            Explore
+          </NavLink>
+        </li>
+        <li className="hover:border-b-2 hover:border-emerald-700">
+          <NavLink to="/About" className={getLinkClass}>
             About
-          </Link>
+          </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <Link to="/Login" className="text-black hover:text-gray-600">
+          <NavLink to="/Login" className={getLinkClass}>
             Login
-          </Link>
+          </NavLink>
         </li>
       </ul>
       {isOpen && (
         <ul className="absolute top-16 left-0 w-full bg-gray-100 flex flex-col items-center text-xl gap-4 p-4 md:hidden z-10 shadow-lg">
           <li>
-            <Link
+            <NavLink
               to="/"
               onClick={() => setIsOpen(false)}
-              className="text-black hover:border-b-2 hover:border-emerald-700"
+              className={getLinkClass}
             >
               Home
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/About"
               onClick={() => setIsOpen(false)}
-              className="text-black hover:border-b-2 hover:border-emerald-700"
+              className={getLinkClass}
             >
               About
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/Donate"
               onClick={() => setIsOpen(false)}
-              className="text-black hover:border-b-2 hover:border-emerald-700"
+              className={getLinkClass}
             >
               Donate
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/Explore"
               onClick={() => setIsOpen(false)}
-              className="text-black hover:border-b-2 hover:border-emerald-700"
+              className={getLinkClass}
             >
               Explore
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/Login"
               onClick={() => setIsOpen(false)}
-              className="text-black hover:border-b-2 hover:border-emerald-700 "
+              className={getLinkClass}
             >
               Login
-            </Link>
+            </NavLink>
           </li>
         </ul>
       )}
@@ -104,3 +112,5 @@ const Navbar = () => {
 };
 
 export default memo(Navbar);
+
+  
