@@ -31,6 +31,7 @@ app.get("/test-db",async(req,res)=>{
     }
     catch(err){
         console.error(err);
+        console.log("DEBUG: Password is:", process.env.DB_PASSWORD);
         res.status(500).json({error: "Database connection failed :("});
     }
 });
