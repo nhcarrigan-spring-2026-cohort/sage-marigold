@@ -1,5 +1,3 @@
-import React from "react";
-
 function StatCards({ title, count }){
   return (
     <div className="bg-emerald-50 rounded-lg p-8 text-center shadow-md hover:shadow-lg transition-shadow duration-300">
