@@ -1,6 +1,7 @@
-# Backend 
+# Backend
 
 ## Skeleton Structure
+
 ```
 /backend
 ├── /src                      # All source code lives here
@@ -34,7 +35,13 @@
 ```
 
 ## Available Commands
-### Running the server
-You can run the server in two ways:
-- Production mode: `npm start`
-- Development Mode (Auto-restart on save): `npm run dev`
+
+| Command                | Description                                                 |
+| :--------------------- | :---------------------------------------------------------- |
+| `npm start`            | Runs the server in production mode.                         |
+| `npm run dev`          | Runs the server in development mode (auto-restart on save). |
+| `npm run lint`         | Checks code quality and style using ESLint.                 |
+| `npm run format`       | **Fixes** code formatting automatically using Prettier.     |
+| `npm run format:check` | **Verifies** that the code follows formatting rules.        |
+
+_Note: Please run `npm run format` to fix styling and `npm run lint` to check for code errors before committing your changes._
