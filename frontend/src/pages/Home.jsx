@@ -5,7 +5,7 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 const Home = () => {
   return (
-    <section className="mx-auto text-center pt-20 px-4">
+    <section className="mx-auto text-center pt-8 px-4">
       <Hero />
       <div className="mt-20 mb-12">
         <h2 className="text-4xl text-center mb-4 font-bold text-emerald-700">
