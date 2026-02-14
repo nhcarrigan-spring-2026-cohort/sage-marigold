@@ -1,7 +1,0 @@
-node_modules/
-.env
-/uploads/*
-!.gitkeep
-.DS_Store
-Thumbs.db
-*.log
