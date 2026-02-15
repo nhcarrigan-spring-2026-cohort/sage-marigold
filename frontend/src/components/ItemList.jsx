@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
-import Skeleton from 
+import Skeleton from "react-loading-skeleton";
 
 const ItemList = () => {
   const [donations, setDonations] = useState([]);
@@ -45,9 +45,7 @@ const ItemList = () => {
   return (
     <div className="grid space-y-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
       {loading ? (
-        <div>
-          
-        </div>
+        <div></div>
       ) : (
         donations.map((donation) => (
           <ItemCard key={donation.id} {...donation} />

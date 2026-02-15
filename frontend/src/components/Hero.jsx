@@ -13,11 +13,25 @@ const Hero = () => {
           moving through our community.
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <Link to="/donate" className="bg-emerald-700 text-white px-6 py-3 rounded-full hover:bg-emerald-800 transition-colors duration-300">
+      <div className="inline-flex sm:flex-row items-center justify-center gap-5 bg-white/5 backdrop-blur-md border border-white/5 p-2 rounded-2xl shadow-xl">        
+        <Link
+          to="/donate"
+          onClick={() => setActiveButton("donate")}
+          className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md
+            ${activeButton === "donate"
+              ? "bg-emerald-500 text-white"
+              : "bg-transparent text-white hover:bg-white/10"
+            }`}>
           I want to donate
         </Link>
-        <Link to="/explore" className="bg-white text-emerald-700 border border-emerald-700 px-6 py-3 rounded-full  hover:bg-emerald-50 transition-colors duration-300">
+        <Link
+          to="/explore"
+          onClick={() => setActiveButton("receive")}
+          className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300
+            ${activeButton === "receive"
+              ? "bg-emerald-500 text-white"
+              : "bg-transparent text-white hover:bg-white/10"
+            }`}>
           I want to receive
         </Link>
       </div>
