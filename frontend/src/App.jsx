@@ -6,6 +6,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Footer from './components/Footer';
 import Explore from './pages/Explore';
+import Donate from './pages/Donate';
 
 
 
@@ -17,9 +18,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Explore" element={<Explore />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
     </div>

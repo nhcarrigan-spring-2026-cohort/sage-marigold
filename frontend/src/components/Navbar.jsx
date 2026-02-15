@@ -38,22 +38,22 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <NavLink to="/Donate" className={getLinkClass}>
+          <NavLink to="/donate" className={getLinkClass}>
             Donate
           </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <NavLink to="/Explore" className={getLinkClass}>
+          <NavLink to="/explore" className={getLinkClass}>
             Explore
           </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <NavLink to="/About" className={getLinkClass}>
+          <NavLink to="/about" className={getLinkClass}>
             About
           </NavLink>
         </li>
         <li className="hover:border-b-2 hover:border-emerald-700">
-          <NavLink to="/Login" className={getLinkClass}>
+          <NavLink to="/login" className={getLinkClass}>
             Login
           </NavLink>
         </li>
@@ -71,7 +71,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to="/About"
+              to="/about"
               onClick={() => setIsOpen(false)}
               className={getLinkClass}
             >
@@ -80,7 +80,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to="/Donate"
+              to="/donate"
               onClick={() => setIsOpen(false)}
               className={getLinkClass}
             >
@@ -89,7 +89,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to="/Explore"
+              to="/explore"
               onClick={() => setIsOpen(false)}
               className={getLinkClass}
             >
@@ -98,7 +98,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to="/Login"
+              to="/login"
               onClick={() => setIsOpen(false)}
               className={getLinkClass}
             >

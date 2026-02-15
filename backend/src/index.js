@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use("/api/items", itemRoutes)
 
+
 app.listen(PORT, () => {
     console.log(`Sage-Marigold backend is running on port ${PORT}`);
 });
