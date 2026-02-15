@@ -1,22 +1,8 @@
-// const mongoose = require('mongoose');
-
-// const itemSchema = new mongoose.Schema({
-//     // Fields (title, description, category, etc.) will be added here
-// }, { timestamps: true });
-
-// module.exports = mongoose.model('Item', itemSchema);
-
-// PostgreSQL version – no Mongoose needed
-
-// This file is kept for structural consistency.
-// Database interactions for items will be handled
-// directly in the controllers using SQL queries.
-
-//module.exports = {};
-
 const pool = require('../config/db');
 
-//new donation item
+/**
+ * Create a new donation item
+ */
 const createItem = async ({ title, description, category, location, condition, donor_id }) => {
   const result = await pool.query(
     `INSERT INTO donation_items (title, description, category, location, condition, donor_id)
@@ -26,7 +12,9 @@ const createItem = async ({ title, description, category, location, condition, d
   return result.rows[0];
 };
 
-//List all items with status "available"
+/**
+ * Get all items with status "available"
+ */
 const getAllAvailableItems = async () => {
   const result = await pool.query(
     `SELECT * FROM donation_items WHERE status = 'available' ORDER BY created_at DESC`
@@ -34,15 +22,19 @@ const getAllAvailableItems = async () => {
   return result.rows;
 };
 
-
-// Get all items regardless of status
+/**
+ * Get all items regardless of status
+ */
 const getAllItems = async () => {
-    const query = 'SELECT * FROM donation_items ORDER BY created_at DESC';
-    const result = await pool.query(query);
-    return result.rows;
+  const result = await pool.query(
+    `SELECT * FROM donation_items ORDER BY created_at DESC`
+  );
+  return result.rows;
 };
 
-//Update an item's status
+/**
+ * Update an item's status
+ */
 const updateItemStatus = async (itemId, status) => {
   const result = await pool.query(
     `UPDATE donation_items SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *`,
@@ -51,7 +43,9 @@ const updateItemStatus = async (itemId, status) => {
   return result.rows[0];
 };
 
-//Get a single item by ID
+/**
+ * Get a single item by ID
+ */
 const getItemById = async (itemId) => {
   const result = await pool.query(
     `SELECT * FROM donation_items WHERE id = $1`,

@@ -1,7 +1,6 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 
-
 const validateJWT = (req, res = response, next) => {
   const token = req.header('x-token');
 
@@ -15,7 +14,7 @@ const validateJWT = (req, res = response, next) => {
   try {
     const { uid, full_name } = jwt.verify(token, process.env.JWT_SECRET);
 
-    // <-- Fix: set req.user object
+    // Set req.user object for consistency with controllers
     req.user = {
       id: uid,
       full_name
@@ -33,6 +32,3 @@ const validateJWT = (req, res = response, next) => {
 module.exports = {
   validateJWT
 };
-
-
-
