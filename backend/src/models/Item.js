@@ -17,11 +17,11 @@
 const pool = require('../config/db');
 
 //new donation item
-const createItem = async ({ title, description, category, location, donor_id }) => {
+const createItem = async ({ title, description, category, location, condition, donor_id }) => {
   const result = await pool.query(
-    `INSERT INTO donation_items (title, description, category, location, donor_id)
-     VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-    [title, description, category, location, donor_id]
+    `INSERT INTO donation_items (title, description, category, location, condition, donor_id)
+     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+    [title, description, category, location, condition, donor_id]
   );
   return result.rows[0];
 };
@@ -29,16 +29,11 @@ const createItem = async ({ title, description, category, location, donor_id }) 
 //List all items with status "available"
 const getAllAvailableItems = async () => {
   const result = await pool.query(
-    `SELECT * FROM donation_items WHERE status = 'available'`
+    `SELECT * FROM donation_items WHERE status = 'available' ORDER BY created_at DESC`
   );
   return result.rows;
 };
 
-const getAllItemsForListing = async () => {
-  const query = 'SELECT * FROM donation_items WHERE status != $1';
-  const { rows } = await pool.query(query, ['withdrawn']);
-  return rows;
-};
 
 // Get all items regardless of status
 const getAllItems = async () => {
@@ -68,7 +63,6 @@ const getItemById = async (itemId) => {
 module.exports = {
   createItem,
   getAllAvailableItems,
-  getAllItemsForListing,
   getAllItems,
   updateItemStatus,
   getItemById

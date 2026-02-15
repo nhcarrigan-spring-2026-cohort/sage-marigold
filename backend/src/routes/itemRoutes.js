@@ -6,20 +6,14 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 //Create a new donation item
 router.post('/', validateJWT, createNewItem);
 
-//List all available items (public)
-router.get('/', listAvailableItems);
-router.get('/', listAllItems);
-// List all items (ignore status) - for testing / admin
+//public routes
+router.get('/available', listAvailableItems);
 router.get('/all', listTotalItems);
-
-
-
-//Get a single item by ID
 router.get('/:id', getItem);
 
 //Update an item's status
 router.put('/:id/status', validateJWT, changeItemStatus);
-router.patch('/:id/status', validateJWT, changeItemStatus);
+//router.patch('/:id/status', validateJWT, changeItemStatus);
 
 
 module.exports = router;

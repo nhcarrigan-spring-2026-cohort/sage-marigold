@@ -1,10 +1,10 @@
 
-const { createItem, getAllAvailableItems, getAllItemsForListing, getAllItems, updateItemStatus, getItemById } = require('../models/Item');
+const { createItem, getAllAvailableItems, getAllItems, updateItemStatus, getItemById } = require('../models/Item');
 
 //Create a new donation item
 const createNewItem = async (req, res) => {
   try {
-    const { title, description, category, location } = req.body;
+    const { title, description, category, location, condition} = req.body;
 
     if (!title || !description || !category || !location) {
       return res.status(400).json({
@@ -16,7 +16,7 @@ const createNewItem = async (req, res) => {
     // donor_id comes from authenticated user (req.user.id)
     const donor_id = req.user.id;
 
-    const newItem = await createItem({ title, description, category, location, donor_id });
+    const newItem = await createItem({ title, description, category, location, condition, donor_id });
 
     res.status(201).json({
       ok: true,
@@ -39,15 +39,15 @@ const listAvailableItems = async (req, res) => {
   }
 };
 
-const listAllItems = async (req, res) => {
-  try {
-    const items = await getAllItemsForListing();
-    res.json({ ok: true, items });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ ok: false, msg: 'Server error fetching items' });
-  }
-};
+// const listAllItems = async (req, res) => {
+//   try {
+//     const items = await getAllItemsForListing();
+//     res.json({ ok: true, items });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ ok: false, msg: 'Server error fetching items' });
+//   }
+// };
 
 // Get all items regardless of status
 const listTotalItems = async (req, res) => {
@@ -115,7 +115,6 @@ const getItem = async (req, res) => {
 module.exports = {
   createNewItem,
   listAvailableItems,
-  listAllItems,
   listTotalItems,
   changeItemStatus,
   getItem
