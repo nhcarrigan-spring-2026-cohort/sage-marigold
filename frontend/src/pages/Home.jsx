@@ -16,8 +16,8 @@ const Home = () => {
           follow the instructions.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-center justify-center max-w-6xl">
-        <div className="flex flex-col gap-1.5 rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
+      <div className="grid grid-cols-1 auto-rows-fr sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-center justify-center max-w-6xl">
+        <div className="flex flex-col gap-1.5 h-full rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
           <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center ">
             <FaBoxOpen className="text-emerald-700" />
           </div>
@@ -26,7 +26,7 @@ const Home = () => {
             Take a photo and add a description. Takes less than 2 minutes.
           </p>
         </div>
-        <div className="flex flex-col gap-1.5 rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
+        <div className="flex flex-col gap-1.5 rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center h-full items-center">
           <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center ">
             <MdPeopleAlt className="text-emerald-700" />
           </div>
@@ -35,7 +35,7 @@ const Home = () => {
             People in need will request your item and tell you why they need it.
           </p>
         </div>
-        <div className="flex flex-col gap-1.5rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
+        <div className="flex flex-col gap-1.5 rounded-xl h-full bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
           <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center ">
             <FaClock className="text-emerald-700" />
           </div>
@@ -45,8 +45,8 @@ const Home = () => {
             up.{" "}
           </p>
         </div>
-        <div className="flex flex-col gap-1.5 rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
-          <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center ">
+        <div className="flex flex-col gap-1.5 h-full rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
+          <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center">
             <IoCheckmarkDoneCircle className="text-emerald-700" />
           </div>
           <h4 className="font-semibold">Complete Donation</h4>

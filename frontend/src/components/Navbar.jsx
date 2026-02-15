@@ -1,4 +1,3 @@
-import Search from './Search';
 import { memo, useState } from "react";
 import { NavLink,Link } from "react-router-dom";
 
@@ -22,7 +21,6 @@ const Navbar = () => {
           HELPING HANDS
         </Link>
       </h1>
-      <Search   search={search} setSearch={setSearch}  />
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden flex flex-col gap-1 cursor-pointer"

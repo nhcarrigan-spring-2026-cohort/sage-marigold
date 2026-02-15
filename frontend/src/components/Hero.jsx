@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Hero = () => {
   return (
     <>
@@ -12,12 +14,12 @@ const Hero = () => {
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <button className="bg-emerald-700 text-white px-6 py-3 rounded-full hover:bg-emerald-800 transition-colors duration-300">
+        <Link to="/donate" className="bg-emerald-700 text-white px-6 py-3 rounded-full hover:bg-emerald-800 transition-colors duration-300">
           I want to donate
-        </button>
-        <button className="bg-white text-emerald-700 border border-emerald-700 px-6 py-3 rounded-full  hover:bg-emerald-50 transition-colors duration-300">
+        </Link>
+        <Link to="/explore" className="bg-white text-emerald-700 border border-emerald-700 px-6 py-3 rounded-full  hover:bg-emerald-50 transition-colors duration-300">
           I want to receive
-        </button>
+        </Link>
       </div>
     </>
   );

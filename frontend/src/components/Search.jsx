@@ -1,13 +1,21 @@
-export default function Search({
-  search,
-  e,
-  setSearch
-}) {
-  return <div className="hidden md:flex flex-1 mx-8 gap-2">
-        <input type="text" placeholder="Search items..." value={search} onChange={e => setSearch(e.target.value)} className="w-full max-w-2xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600" />
-        <button className="bg-black text-white px-6 py-2 text-sm font-semibold hover:bg-gray-800">
-          Search
-        </button>
-      </div>;
+import { LuSearch  } from "react-icons/lu";
+
+const Search = ({search, setSearch}) => {
+  return (
+    <div className="w-full relative md:max-w-md border-2 border-emerald-300 rounded-3xl">
+        <div className="absolute inset-y-0 left-0 flex items-center  pl-4 pointer-events-none">
+            <LuSearch className= "text-[hsl(200,15%,8%)]"/>
+        </div>
+        
+      <input
+        name="search"
+        type="text"
+        placeholder="Search Items..."
+        className="bg-white text-[hsl(200,15%,8%)] placeholder:text-[12px] w-full py-2 pl-12 outline-none rounded-3xl pr-4 shadow-md"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
+  )
 }
-  
+export default Search
