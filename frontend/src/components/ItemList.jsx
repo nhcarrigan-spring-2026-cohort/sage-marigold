@@ -1,49 +1,59 @@
+import { useEffect, useState } from "react";
+import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
+import Skeleton from 
 
 const ItemList = () => {
-  return (
-     <div className="grid space-y-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        <ItemCard
-          category="Furniture"
-          title="Sofa"
-          description="Upgraded my living room and want these to go to someone..."
-          condition="good"
-          location="Manhattan, NY"
-          date_posted="01/02/2026"
-          image="/sofa_placeholder.jpg"
-          // onRequest={() => console.log("Requested")}
-        />
-        <ItemCard
-          category="Appliances"
-          title="Toaster"
-          description="Upgraded my kitchen and want these to go to someone..."
-          condition="good"
-          location="Manhattan, NY"
-          date_posted="01/02/2026"
-          image= "/toaster_placeholder.jpg"
-          // onRequest={() => console.log("Requested")}
-        />
-        <ItemCard
-          category="Furniture"
-          title="Sofa"
-          description="Upgraded my living room and want these to go to someone..."
-          condition="good"
-          location="Manhattan, NY"
-          date_posted="01/02/2026"
-          image="/sofa_placeholder.jpg"
-          // onRequest={() => console.log("Requested")}
-        />
-        <ItemCard
-          category="Appliances"
-          title="Toaster"
-          description="Upgraded my kitchen and want these to go to someone..."
-          condition="good"
-          location="Manhattan, NY"
-          date_posted="01/02/2026"
-          image="/toaster_placeholder.jpg"
-          // onRequest={() => console.log("Requested")}
-        />
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch items from backend API on component mount
+  useEffect(() => {
+    const fetchDonations = async () => {
+      try {
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // const response = await fetch("/api/donations");
+
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch items");
+        // }
+        // const data = await response.json();
+        setDonations(mockDonations);
+        console.log("Fetched items:", mockDonations);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        setError(error);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDonations();
+  }, []);
+
+  if (error) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        Error: {error.message}
       </div>
-  )
-}
-export default ItemList
+    );
+  }
+  return (
+    <div className="grid space-y-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+      {loading ? (
+        <div>
+          
+        </div>
+      ) : (
+        donations.map((donation) => (
+          <ItemCard key={donation.id} {...donation} />
+        ))
+      )}
+    </div>
+  );
+};
+export default ItemList;
