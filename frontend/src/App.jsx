@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Footer from './components/Footer';
 import Explore from './pages/Explore';
 import Donate from './pages/Donate';
+import SignUp from './pages/SignUp';
 
 
 
@@ -14,6 +15,7 @@ import Donate from './pages/Donate';
 
 function App() {
   return (
+
     <div className='flex flex-col min-h-screen justify-between bg-[#f5f5f5]'>
       <Navbar />
       <Routes>
@@ -22,8 +24,12 @@ function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/SignUp" element={<SignUp/>} />
       </Routes>
       <Footer />
+
+
+  
     </div>
   );
 }
