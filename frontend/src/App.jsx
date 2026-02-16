@@ -1,3 +1,4 @@
+
 import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -6,6 +7,7 @@ import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import Explore from "./pages/Explore";
 import Donate from "./pages/Donate";
+import SignUp from "./pages/SignUp";
 import "react-loading-skeleton/dist/skeleton.css";
 import { SkeletonTheme } from "react-loading-skeleton";
 
@@ -20,9 +22,14 @@ function App() {
           <Route path="/donate" element={<Donate />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
+          <Route path="signUp" element={<SignUp/>} />
         </Routes>
       </SkeletonTheme>
+
       <Footer />
+
+
+  
     </div>
   );
 }

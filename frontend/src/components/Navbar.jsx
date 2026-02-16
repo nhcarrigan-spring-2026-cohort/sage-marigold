@@ -68,6 +68,11 @@ const Navbar = () => {
             Login
           </NavLink>
         </li>
+          <li className="hover:border-b-2 hover:border-emerald-700">
+          <Link to="/SignUp" className="text-black hover:text-gray-600">
+            SignUp
+          </Link>
+        </li>
       </ul>
       {isOpen && (
         <ul className="absolute top-16 left-0 w-full bg-gray-100 flex flex-col items-center text-xl gap-4 p-4 md:hidden z-10 shadow-lg">
@@ -115,6 +120,15 @@ const Navbar = () => {
             >
               Login
             </NavLink>
+          </li>
+           <li>
+            <Link
+              to="/SignUp"
+              onClick={() => setIsOpen(false)}
+              className="text-black hover:border-b-2 hover:border-emerald-700 "
+            >
+              SignUp
+            </Link>
           </li>
         </ul>
       )}
