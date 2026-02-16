@@ -1,8 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const { validateJWT } = require('../middlewares/validate-jwt');
-const { createRequest } = require('../controllers/requestController');
+const {
+  createRequest,
+  getMyRequests,
+  getItemRequests,
+  acceptRequest,
+  cancelRequest,
+} = require('../controllers/requestController');
 
-router.post('/application-form', [validateJWT], createRequest);
+// POST /api/requests
+router.post('/', validateJWT, createRequest);
+
+// GET /api/requests/me
+router.get('/me', validateJWT, getMyRequests);
+
+// GET /api/requests/item/:id (Donor seeing all requests for one item)
+router.get('/item/:id', validateJWT, getItemRequests);
+
+// PATCH /api/requests/:id/status (Donor accepting a request)
+router.patch('/:id/status', validateJWT, acceptRequest);
+
+// PATCH /api/requests/:id/cancel (Requester cancelling their own)
+router.patch('/:id/cancel', validateJWT, cancelRequest);
 
 module.exports = router;
