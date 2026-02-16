@@ -14,7 +14,7 @@ const createRequest = async (req, res = response) => {
 
   try {
     const itemResult = await db.query(
-      'SELECT owner_id FROM items WHERE id=$1',
+      'SELECT donor_id, status FROM donation_items WHERE id=$1',
       [item_id]
     );
     if (itemResult.rows.length === 0) {
@@ -23,9 +23,16 @@ const createRequest = async (req, res = response) => {
         message: 'Item not found',
       });
     }
-    const owner_id = itemResult.rows[0].owner_id;
+    const { donor_id, status } = itemResult.rows[0];
 
-    if (requester_id === owner_id) {
+    if (status !== 'available') {
+      return res.status(400).json({
+        ok: false,
+        message: 'This item is no longer available',
+      });
+    }
+
+    if (requester_id === donor_id) {
       return res.status(400).json({
         ok: false,
         message:
@@ -64,20 +71,20 @@ const createRequest = async (req, res = response) => {
 
 const acceptRequest = async (req, res = response) => {
   try {
-    const { id } = req.params;
-    const owner_id = req.user.id; // Grabbing the logged in user's ID (it must be the owner)
+    const { id } = req.params; // Request ID
+    const donor_id = req.user.id; // Grabbing the logged in user's ID (it must be the owner)
     const requestCheck = await db.query(
-      'SELECT r.*, i.owner_id FROM requests r JOIN items i ON r.item_id=i.id WHERE r.id=$1',
+      'SELECT r.*, i.donor_id FROM requests r JOIN donation_items i ON r.item_id=i.id WHERE r.id=$1',
       [id]
     );
     if (requestCheck.rows.length === 0) {
       return res.status(404).json({
         ok: false,
-        message: 'Not found',
+        message: 'Request not found',
       });
     }
     const requestData = requestCheck.rows[0];
-    if (requestData.owner_id !== owner_id) {
+    if (requestData.donor_id !== donor_id) {
       return res.status(401).json({
         ok: false,
         message: 'Not your item!',
@@ -94,9 +101,10 @@ const acceptRequest = async (req, res = response) => {
       [item_id, id]
     );
 
-    await db.query("UPDATE items SET status = 'reserved' WHERE id=$1", [
-      item_id,
-    ]);
+    await db.query(
+      "UPDATE donation_items SET status = 'reserved' WHERE id=$1",
+      [item_id]
+    );
 
     res.status(200).json({
       ok: true,
