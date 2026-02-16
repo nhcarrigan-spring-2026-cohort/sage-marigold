@@ -14,7 +14,7 @@ const createRequest = async (req, res = response) => {
 
   try {
     const itemResult = await db.query(
-      'SELECT donor_id, status FROM donation_items WHERE id=$1',
+      'SELECT donor_id, status FROM donation_items WHERE id=$1 FOR UPDATE',
       [item_id]
     );
     if (itemResult.rows.length === 0) {
@@ -50,6 +50,16 @@ const createRequest = async (req, res = response) => {
         message: 'You already have a pending request for this item',
       });
     }
+    const pendingRequests = await db.query(
+      "SELECT COUNT (*) AS total FROM requests WHERE item_id=$1 AND status = 'pending'",
+      [item_id]
+    );
+    if (parseInt(pendingRequests.rows[0].total) >= 15) {
+      return res.status(400).json({
+        ok: false,
+        message: 'This item has exceeded number of possible pending requests',
+      });
+    }
     const query =
       'INSERT INTO requests (item_id, requester_id, application_data) VALUES ($1, $2, $3) RETURNING *';
     const values = [item_id, requester_id, application_data];
@@ -73,38 +83,69 @@ const acceptRequest = async (req, res = response) => {
   try {
     const { id } = req.params; // Request ID
     const donor_id = req.user.id; // Grabbing the logged in user's ID (it must be the owner)
-    const requestCheck = await db.query(
-      'SELECT r.*, i.donor_id FROM requests r JOIN donation_items i ON r.item_id=i.id WHERE r.id=$1',
-      [id]
-    );
-    if (requestCheck.rows.length === 0) {
-      return res.status(404).json({
-        ok: false,
-        message: 'Request not found',
-      });
+    const client = await db.connect(); // Get a specific connection
+
+    try {
+      await client.query('BEGIN'); // Start the transaction
+
+      const requestCheck = await client.query(
+        'SELECT r.*, i.donor_id, i.status AS item_status FROM requests r JOIN donation_items i ON r.item_id=i.id WHERE r.id=$1 FOR UPDATE',
+        [id]
+      );
+      if (requestCheck.rows.length === 0) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({
+          ok: false,
+          message: 'Request not found',
+        });
+      }
+      const requestData = requestCheck.rows[0];
+      if (requestData.donor_id !== donor_id) {
+        await client.query('ROLLBACK');
+        return res.status(401).json({
+          ok: false,
+          message: 'Not your item!',
+        });
+      }
+      if (requestData.item_status !== 'available') {
+        await client.query('ROLLBACK');
+        return res.status(401).json({
+          ok: false,
+          message:
+            'You cannot accept new requests for items that are no longer available',
+        });
+      }
+      if (requestData.status !== 'pending') {
+        await client.query('ROLLBACK');
+        return res.status(400).json({
+          ok: false,
+          message: 'Only pending requests can be accepted',
+        });
+      }
+      const { item_id } = requestData;
+
+      await client.query(
+        "UPDATE requests SET status = 'accepted' WHERE id = $1",
+        [id]
+      );
+
+      await client.query(
+        "UPDATE requests SET status = 'rejected' WHERE item_id=$1 AND status='pending' AND id!=$2",
+        [item_id, id]
+      );
+
+      await client.query(
+        "UPDATE donation_items SET status = 'reserved' WHERE id=$1",
+        [item_id]
+      );
+
+      await client.query('COMMIT'); // Save evrything
+    } catch (error) {
+      await client.query('ROLLBACK'); // Undo everything if it fails
+      throw error;
+    } finally {
+      client.release(); // Put the connection back in the pool
     }
-    const requestData = requestCheck.rows[0];
-    if (requestData.donor_id !== donor_id) {
-      return res.status(401).json({
-        ok: false,
-        message: 'Not your item!',
-      });
-    }
-    const { item_id } = requestData;
-
-    await db.query("UPDATE requests SET status = 'accepted' WHERE id = $1", [
-      id,
-    ]);
-
-    await db.query(
-      "UPDATE requests SET status = 'rejected' WHERE item_id=$1 AND status='pending' AND id!=$2",
-      [item_id, id]
-    );
-
-    await db.query(
-      "UPDATE donation_items SET status = 'reserved' WHERE id=$1",
-      [item_id]
-    );
 
     res.status(200).json({
       ok: true,
