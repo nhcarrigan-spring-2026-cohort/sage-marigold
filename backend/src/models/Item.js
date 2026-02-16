@@ -1,8 +1,6 @@
 const pool = require('../config/db');
 
-/**
- * Create a new donation item
- */
+//Create a new donation item
 const createItem = async ({ title, description, category, location, condition, donor_id }) => {
   const result = await pool.query(
     `INSERT INTO donation_items (title, description, category, location, condition, donor_id)
@@ -12,9 +10,9 @@ const createItem = async ({ title, description, category, location, condition, d
   return result.rows[0];
 };
 
-/**
- * Get all items with status "available"
- */
+
+// Get all items with status "available"
+
 const getAllAvailableItems = async () => {
   const result = await pool.query(
     `SELECT * FROM donation_items WHERE status = 'available' ORDER BY created_at DESC`
@@ -22,9 +20,8 @@ const getAllAvailableItems = async () => {
   return result.rows;
 };
 
-/**
- * Get all items regardless of status
- */
+//Get all items regardless of status
+
 const getAllItems = async () => {
   const result = await pool.query(
     `SELECT * FROM donation_items ORDER BY created_at DESC`
@@ -40,7 +37,7 @@ const updateItemStatus = async (itemId, status) => {
     `UPDATE donation_items SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *`,
     [status, itemId]
   );
-  return result.rows[0];
+  return result.rows[0] || null;
 };
 
 /**
@@ -51,7 +48,7 @@ const getItemById = async (itemId) => {
     `SELECT * FROM donation_items WHERE id = $1`,
     [itemId]
   );
-  return result.rows[0];
+  return result.rows[0] || null;
 };
 
 module.exports = {

@@ -3,7 +3,7 @@ const { createItem, getAllAvailableItems, getAllItems, updateItemStatus, getItem
 //Create a new donation item
 const createNewItem = async (req, res) => {
   try {
-    const { title, description, category, location, condition} = req.body;
+    const { title, description, category, location, condition } = req.body;
 
     if (!title || !description || !category || !location) {
       return res.status(400).json({
@@ -12,7 +12,7 @@ const createNewItem = async (req, res) => {
       });
     }
 
-    // donor_id comes from authenticated user (req.user.id)
+    // Get donor_id from authenticated user
     const donor_id = req.user.id;
 
     const newItem = await createItem({ title, description, category, location, condition, donor_id });
@@ -22,42 +22,32 @@ const createNewItem = async (req, res) => {
       item: newItem
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error creating item:', error);
     res.status(500).json({ ok: false, msg: 'Server error creating item' });
   }
 };
 
-//Get all available items
+//Get all available items (Public)
 const listAvailableItems = async (req, res) => {
   try {
     const items = await getAllAvailableItems();
     res.json({ ok: true, items });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching available items:', error);
     res.status(500).json({ ok: false, msg: 'Server error fetching items' });
   }
 };
 
-// const listAllItems = async (req, res) => {
-//   try {
-//     const items = await getAllItemsForListing();
-//     res.json({ ok: true, items });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ ok: false, msg: 'Server error fetching items' });
-//   }
-// };
-
-// Get all items regardless of status
+//Get all items regardless of status (Public - for admin/testing)
 const listTotalItems = async (req, res) => {
-    try {
-        const items = await getAllItems();
-        res.json({ ok: true, items });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ ok: false, msg: 'Server error fetching all items' });
-    }
-}
+  try {
+    const items = await getAllItems();
+    res.json({ ok: true, items });
+  } catch (error) {
+    console.error('Error fetching all items:', error);
+    res.status(500).json({ ok: false, msg: 'Server error fetching all items' });
+  }
+};
 
 //Update item status
 const changeItemStatus = async (req, res) => {
@@ -68,14 +58,19 @@ const changeItemStatus = async (req, res) => {
     const validStatuses = ['available', 'reserved', 'claimed', 'withdrawn'];
 
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ ok: false, msg: 'Invalid status value' });
+      return res.status(400).json({ 
+        ok: false, 
+        msg: 'Invalid status value. Must be one of: available, reserved, claimed, withdrawn' 
+      });
     }
+
     const existingItem = await getItemById(id);
 
     if (!existingItem) {
       return res.status(404).json({ ok: false, msg: 'Item not found' });
     }
 
+    // Authorization check: only the donor can update their item
     if (existingItem.donor_id !== req.user.id) {
       return res.status(403).json({
         ok: false,
@@ -85,16 +80,18 @@ const changeItemStatus = async (req, res) => {
     
     const updatedItem = await updateItemStatus(id, status);
 
-    res.json({ ok: true, item: updatedItem });
+    if (!updatedItem) {
+      return res.status(404).json({ ok: false, msg: 'Item not found' });
+    }
 
+    res.json({ ok: true, item: updatedItem });
   } catch (error) {
-    console.error(error);
+    console.error('Error updating item status:', error);
     res.status(500).json({ ok: false, msg: 'Server error updating item status' });
   }
 };
 
-
-//Get a single item by ID (optional)
+//Get a single item by ID (Public)
 const getItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -106,7 +103,7 @@ const getItem = async (req, res) => {
 
     res.json({ ok: true, item });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching item:', error);
     res.status(500).json({ ok: false, msg: 'Server error fetching item' });
   }
 };
@@ -118,4 +115,3 @@ module.exports = {
   changeItemStatus,
   getItem
 };
-
