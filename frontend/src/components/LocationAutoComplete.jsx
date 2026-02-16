@@ -70,7 +70,7 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Enter pickup location"
-        className="w-full px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500"
+        className="w-full px-3 py-2 rounded-md border border-transparent bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500"
       />
       {loading && (
         <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-md shadow-md p-2 text-sm text-gray-500">
