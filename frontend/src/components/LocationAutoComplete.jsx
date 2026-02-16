@@ -7,7 +7,6 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
   const debounceRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Fetch suggestions with debounce
   useEffect(() => {
     if (!query) {
       setSuggestions([]);
@@ -41,10 +40,9 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
       } finally {
         setLoading(false);
       }
-    }, 400); // 400ms debounce
+    }, 400); 
   }, [query]);
 
-  // Handle selection
   const handleSelect = (s) => {
     setQuery(s.address);
     setSuggestions([]);
@@ -55,7 +53,6 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
     });
   };
 
-  // Close dropdown if click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {

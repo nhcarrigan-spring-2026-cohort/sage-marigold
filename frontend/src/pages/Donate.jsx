@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FaTimes, FaPlus } from "react-icons/fa";
+import LocationAutocomplete from "../components/LocationAutoComplete.jsx";
 
 const Donate = () => {
   const [images, setImages] = useState([]);
@@ -12,7 +13,9 @@ const Donate = () => {
     category: '',
     condition: '',
     location: '',
-    pickupInstructions: ''
+    pickupInstructions: '',
+    latitude: null,
+    longitude: null,
   });
 
   const [errors, setErrors] = useState({});
@@ -122,8 +125,8 @@ const Donate = () => {
       newErrors.condition = 'Please select a condition';
     }
 
-    if (!formData.location.trim()) {
-      newErrors.location = 'Pickup location is required';
+    if (!formData.location || !formData.latitude || !formData.longitude) {
+      newErrors.location = 'Please select a valid pickup location from suggestions';
     }
 
     if (images.length === 0) {
@@ -141,7 +144,9 @@ const Donate = () => {
       category: '',
       condition: '',
       location: '',
-      pickupInstructions: ''
+      pickupInstructions: '',
+      latitude: null, 
+      longitude: null,
     });
     
     images.forEach(image => URL.revokeObjectURL(image.preview));
@@ -199,6 +204,22 @@ const Donate = () => {
       setLoading(false);
     }
   };
+
+  const handleLocationSelect = ({ address, latitude, longitude }) => {
+  setFormData(prev => ({
+    ...prev,
+    location: address,
+    latitude,
+    longitude
+  }));
+
+  if (errors.location) {
+    setErrors(prev => ({
+      ...prev,
+      location: ''
+    }));
+  }
+};
 
   useEffect(() => {
     return () => {
@@ -426,21 +447,11 @@ const Donate = () => {
               )}
             </div>
           </div>
-              {/* item location */}
           <div className="space-y-2">
             <label htmlFor="location" className="text-sm font-medium">
               Pickup Location *
             </label>
-            <input
-              id="location"
-              type="text"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="E.g nearest landmarks or streets"
-              className={`w-full cursor-pointer px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
-                errors.location ? 'border-red-500' : 'border-transparent'
-              }`}
-            />
+            <LocationAutocomplete onLocationSelect={handleLocationSelect} />
             <p className="text-xs text-gray-500">
               General area only. Exact address shared after confirmation.
             </p>
@@ -448,7 +459,6 @@ const Donate = () => {
               <p className="text-sm text-red-600">{errors.location}</p>
             )}
           </div>
-            {/* pickup instructions */}
           <div className="space-y-2">
             <label htmlFor="pickupInstructions" className="text-sm font-medium">
               Pickup Instructions (Optional)
