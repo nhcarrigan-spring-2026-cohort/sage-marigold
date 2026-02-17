@@ -223,9 +223,10 @@ const cancelRequest = async (req, res = response) => {
       );
     }
     if (status === 'pending' || status === 'accepted') {
-      await client.query("UPDATE requests SET status='cancelled' WHERE id=$1", [
-        currentRequestState.rows[0].id,
-      ]);
+      await client.query(
+        "UPDATE requests SET status='cancelled' WHERE id=$1 RETURNING *",
+        [currentRequestState.rows[0].id]
+      );
     }
     await client.query('COMMIT');
     return res.status(200).json({
