@@ -98,7 +98,7 @@ const createRequest = async (req, res = response) => {
 };
 
 const acceptRequest = async (req, res = response) => {
-  const { id } = req.params; // Request ID
+  const { request_id } = req.params; // Request ID
   const donor_id = req.user.id; // Grabbing the logged in user's ID (it must be the owner)
   let client;
   try {
@@ -107,7 +107,7 @@ const acceptRequest = async (req, res = response) => {
 
     const requestCheck = await client.query(
       'SELECT r.*, i.donor_id, i.status AS item_status FROM requests r JOIN donation_items i ON r.item_id=i.id WHERE r.id=$1 FOR UPDATE',
-      [id]
+      [request_id]
     );
     if (requestCheck.rows.length === 0) {
       await client.query('ROLLBACK');
@@ -143,7 +143,7 @@ const acceptRequest = async (req, res = response) => {
 
     const acceptResult = await client.query(
       "UPDATE requests SET status = 'accepted' WHERE id = $1 AND status = 'pending' RETURNING *",
-      [id]
+      [request_id]
     );
 
     // If rowCount is 0, it means the request was no longer 'pending'
@@ -157,7 +157,7 @@ const acceptRequest = async (req, res = response) => {
 
     await client.query(
       "UPDATE requests SET status = 'rejected' WHERE item_id=$1 AND status='pending' AND id!=$2",
-      [item_id, id]
+      [item_id, request_id]
     );
 
     await client.query(
@@ -189,16 +189,15 @@ const acceptRequest = async (req, res = response) => {
 const cancelRequest = async (req, res = response) => {
   // If an item was at 15/15 requests and someone cancels, it opens up a spot for someone else
   // if a user cancels a request that was already accepted, the item status should go from reserved back to available
-  const { item_id } = req.body;
   const requester_id = req.user.id;
-  const { id: paramId } = req.params;
+  const { request_id: paramId } = req.params;
   let client;
   try {
     client = await db.connect();
     await client.query('BEGIN');
     const currentRequestState = await client.query(
-      'SELECT id, status FROM requests WHERE item_id = $1 AND requester_id = $2 AND id=$3 FOR UPDATE',
-      [item_id, requester_id, paramId]
+      'SELECT id, item_id, status FROM requests WHERE id = $1 AND requester_id = $2 FOR UPDATE',
+      [paramId, requester_id]
     );
     if (currentRequestState.rows.length === 0) {
       await client.query('ROLLBACK');
@@ -207,7 +206,7 @@ const cancelRequest = async (req, res = response) => {
         message: "You don't have any request for this item yet",
       });
     }
-    const { status } = currentRequestState.rows[0];
+    const { status, item_id } = currentRequestState.rows[0];
     if (status === 'rejected' || status === 'cancelled') {
       await client.query('ROLLBACK');
       return res.status(400).json({

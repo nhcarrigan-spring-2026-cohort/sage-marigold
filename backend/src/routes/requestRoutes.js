@@ -15,13 +15,13 @@ router.post('/', validateJWT, createRequest);
 // GET /api/requests/me (Requester seeing all the item requests they have made)
 router.get('/me', validateJWT, getMyRequests);
 
-// GET /api/requests/item/:id (Donor seeing all requests for one item)
-router.get('/item/:id', validateJWT, getItemRequests);
+// GET /api/requests/item/:item_id (Donor seeing all requests for one item)
+router.get('/item/:item_id', validateJWT, getItemRequests);
 
-// PATCH /api/requests/:id/status (Donor accepting a request)
-router.patch('/:id/status', validateJWT, acceptRequest);
+// PATCH /api/requests/:request_id/status (Donor accepting a request)
+router.patch('/:request_id/status', validateJWT, acceptRequest);
 
-// PATCH /api/requests/:id/cancel (Requester cancelling their own)
-router.patch('/:id/cancel', validateJWT, cancelRequest);
+// PATCH /api/requests/:request_id/cancel (Requester cancelling their own)
+router.patch('/:request_id/cancel', validateJWT, cancelRequest);
 
 module.exports = router;
