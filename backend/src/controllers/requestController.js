@@ -39,7 +39,7 @@ const createRequest = async (req, res = response) => {
 
     if (requester_id === donor_id) {
       await client.query('ROLLBACK');
-      return res.status(400).json({
+      return res.status(403).json({
         ok: false,
         message:
           "You cannot request your own item! That's like calling your own phone to see if you're home",
@@ -142,7 +142,7 @@ const acceptRequest = async (req, res = response) => {
     const { item_id } = requestData;
 
     const acceptResult = await client.query(
-      "UPDATE requests SET status = 'accepted' WHERE id = $1 AND status = 'pending' RETURNING *",
+      "UPDATE requests SET status = 'accepted', updated_at = NOW() WHERE id = $1 AND status = 'pending' RETURNING *",
       [request_id]
     );
 
@@ -156,12 +156,12 @@ const acceptRequest = async (req, res = response) => {
     }
 
     await client.query(
-      "UPDATE requests SET status = 'rejected' WHERE item_id=$1 AND status='pending' AND id!=$2",
+      "UPDATE requests SET status = 'rejected', updated_at = NOW() WHERE item_id=$1 AND status='pending' AND id!=$2",
       [item_id, request_id]
     );
 
     await client.query(
-      "UPDATE donation_items SET status = 'reserved' WHERE id=$1",
+      "UPDATE donation_items SET status = 'reserved', updated_at = NOW() WHERE id=$1",
       [item_id]
     );
 
@@ -218,13 +218,13 @@ const cancelRequest = async (req, res = response) => {
     if (status === 'accepted') {
       // freeing up the item
       await client.query(
-        "UPDATE donation_items SET status = 'available' WHERE id=$1",
+        "UPDATE donation_items SET status = 'available', updated_at = NOW() WHERE id=$1",
         [item_id]
       );
     }
     if (status === 'pending' || status === 'accepted') {
       await client.query(
-        "UPDATE requests SET status='cancelled' WHERE id=$1 RETURNING *",
+        "UPDATE requests SET status='cancelled', updated_at = NOW() WHERE id=$1 RETURNING *",
         [currentRequestState.rows[0].id]
       );
     }

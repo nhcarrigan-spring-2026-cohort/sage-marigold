@@ -17,3 +17,6 @@ CREATE INDEX IF NOT EXISTS idx_requests_requester_id ON requests(requester_id);
 -- Add an index for faster queries on item_id (speeds up the process of a donor viewing all applications for their specific item)
 CREATE INDEX IF NOT EXISTS idx_requests_item_id ON requests(item_id);
 
+-- Prevents a user from having multiple 'pending' requests for the same item at once, 
+-- while still allowing them to re-apply if a previous request was 'cancelled' or 'rejected'
+CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_pending_request ON requests (item_id, requester_id) WHERE status = 'pending';
