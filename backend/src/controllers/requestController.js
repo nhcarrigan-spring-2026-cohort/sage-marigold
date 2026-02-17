@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const Request = require('../models/Request');
 const { response } = require('express');
 
 const createRequest = async (req, res = response) => {
@@ -253,22 +254,11 @@ const getMyRequests = async (req, res = response) => {
   const requester_id = req.user.id;
   // fetch all requests belonging to the logged in user
   try {
-    const requests = await db.query(
-      `SELECT 
-    r.id, 
-    r.status, 
-    r.created_at,
-    i.title AS item_name,
-    i.description AS item_description
-    FROM requests r 
-    JOIN donation_items i ON r.item_id=i.id 
-    WHERE r.requester_id=$1
-    ORDER BY r.created_at DESC`, // Show the newest first
-      [requester_id]
-    );
+    const requests = await Request.findByRequester(requester_id);
+
     return res.status(200).json({
       ok: true,
-      requests: requests.rows,
+      requests,
     });
   } catch (error) {
     console.error(error);
@@ -300,20 +290,10 @@ const getItemRequests = async (req, res = response) => {
         message: "You don't have permission to view these requests",
       });
     }
-    const result = await db.query(
-      `SELECT 
-      r.id AS request_id, 
-      r.status, 
-      u.name AS requester_name, 
-      u.email AS requester_email 
-      FROM requests r JOIN users u ON r.requester_id=u.id 
-      JOIN donation_items i ON r.item_id=i.id 
-      WHERE r.item_id=$1 AND i.donor_id=$2`,
-      [item_id, donor_id]
-    );
+    const requests = await Request.findByItem(item_id, donor_id);
     return res.status(200).json({
       ok: true,
-      requests: result.rows,
+      requests,
     });
   } catch (error) {
     console.error(error);
