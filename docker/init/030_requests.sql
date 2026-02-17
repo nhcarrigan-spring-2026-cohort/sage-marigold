@@ -34,6 +34,7 @@ CREATE INDEX IF NOT EXISTS idx_requests_requester_id ON requests(requester_id);
 CREATE INDEX IF NOT EXISTS idx_requests_item_id ON requests(item_id);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 -- Prevents a user from having multiple 'pending' requests for the same item at once, 
 -- while still allowing them to re-apply if a previous request was 'cancelled' or 'rejected'
 CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_pending_request ON requests (item_id, requester_id) WHERE status = 'pending';
@@ -41,3 +42,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_pending_request ON requests (item_i
 >>>>>>> cd33768 (refactor: sync request logic with donation_items table and add status validation)
 =======
 >>>>>>> 7125eb5 (feat: implement database transactions for acceptRequest (WIP: createRequest transaction))
+=======
+-- Prevents a user from having multiple 'pending' requests for the same item at once, 
+-- while still allowing them to re-apply if a previous request was 'cancelled' or 'rejected'
+CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_pending_request ON requests (item_id, requester_id) WHERE status = 'pending';
+>>>>>>> 0dbc33c (fix: implement partial unique index for pending requests and manual timestamp updates in controller)
