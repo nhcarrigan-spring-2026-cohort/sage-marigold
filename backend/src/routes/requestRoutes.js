@@ -12,7 +12,7 @@ const {
 // POST /api/requests
 router.post('/', validateJWT, createRequest);
 
-// GET /api/requests/me
+// GET /api/requests/me (Requester seeing all the item requests they have made)
 router.get('/me', validateJWT, getMyRequests);
 
 // GET /api/requests/item/:id (Donor seeing all requests for one item)

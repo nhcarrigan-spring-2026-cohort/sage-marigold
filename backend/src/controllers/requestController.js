@@ -31,7 +31,7 @@ const createRequest = async (req, res = response) => {
 
     if (status !== 'available') {
       await client.query('ROLLBACK');
-      return res.status(400).json({
+      return res.status(409).json({
         ok: false,
         message: 'This item is no longer available',
       });
@@ -119,14 +119,14 @@ const acceptRequest = async (req, res = response) => {
     const requestData = requestCheck.rows[0];
     if (requestData.donor_id !== donor_id) {
       await client.query('ROLLBACK');
-      return res.status(401).json({
+      return res.status(403).json({
         ok: false,
         message: 'Not your item!',
       });
     }
     if (requestData.item_status !== 'available') {
       await client.query('ROLLBACK');
-      return res.status(403).json({
+      return res.status(409).json({
         ok: false,
         message:
           'You cannot accept new requests for items that are no longer available',
@@ -142,7 +142,7 @@ const acceptRequest = async (req, res = response) => {
     const { item_id } = requestData;
 
     const acceptResult = await client.query(
-      "UPDATE requests SET status = 'accepted' WHERE id = $1 AND status = 'pending'",
+      "UPDATE requests SET status = 'accepted' WHERE id = $1 AND status = 'pending' RETURNING *",
       [id]
     );
 
@@ -189,14 +189,139 @@ const acceptRequest = async (req, res = response) => {
 const cancelRequest = async (req, res = response) => {
   // If an item was at 15/15 requests and someone cancels, it opens up a spot for someone else
   // if a user cancels a request that was already accepted, the item status should go from reserved back to available
+  const { item_id } = req.body;
+  const requester_id = req.user.id;
+  const { id: paramId } = req.params;
+  let client;
+  try {
+    client = await db.connect();
+    await client.query('BEGIN');
+    const currentRequestState = await client.query(
+      'SELECT id, status FROM requests WHERE item_id = $1 AND requester_id = $2 AND id=$3 FOR UPDATE',
+      [item_id, requester_id, paramId]
+    );
+    if (currentRequestState.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({
+        ok: false,
+        message: "You don't have any request for this item yet",
+      });
+    }
+    const { status } = currentRequestState.rows[0];
+    if (status === 'rejected' || status === 'cancelled') {
+      await client.query('ROLLBACK');
+      return res.status(400).json({
+        ok: false,
+        message:
+          "You can't cancel requests which have already been cancelled or rejected",
+      });
+    }
+    if (status === 'accepted') {
+      // freeing up the item
+      await client.query(
+        "UPDATE donation_items SET status = 'available' WHERE id=$1",
+        [item_id]
+      );
+    }
+    if (status === 'pending' || status === 'accepted') {
+      await client.query("UPDATE requests SET status='cancelled' WHERE id=$1", [
+        currentRequestState.rows[0].id,
+      ]);
+    }
+    await client.query('COMMIT');
+    return res.status(200).json({
+      ok: true,
+      message: 'Request cancelled successfully',
+    });
+  } catch (error) {
+    if (client) {
+      await client.query('ROLLBACK');
+    }
+    console.error('Cancel Request Error', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error',
+    });
+  } finally {
+    if (client) {
+      client.release(); // Put the connection back in the pool
+    }
+  }
 };
 
 const getMyRequests = async (req, res = response) => {
-  // logic here
+  const requester_id = req.user.id;
+  // fetch all requests belonging to the logged in user
+  try {
+    const requests = await db.query(
+      `SELECT 
+    r.id, 
+    r.status, 
+    r.created_at,
+    i.title AS item_name,
+    i.description AS item_description
+    FROM requests r 
+    JOIN donation_items i ON r.item_id=i.id 
+    WHERE r.requester_id=$1
+    ORDER BY r.created_at DESC`, // Show the newest first
+      [requester_id]
+    );
+    return res.status(200).json({
+      ok: true,
+      requests: requests.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Error fetching your requests',
+    });
+  }
 };
 
 const getItemRequests = async (req, res = response) => {
-  // logic here
+  const { item_id } = req.params; // the item the donor is looking at
+  const donor_id = req.user.id; // the logged in donor
+
+  try {
+    const itemCheck = await db.query(
+      'SELECT donor_id FROM donation_items WHERE id=$1',
+      [item_id]
+    );
+    if (itemCheck.rows.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: 'Item not found',
+      });
+    }
+    if (itemCheck.rows[0].donor_id !== donor_id) {
+      return res.status(403).json({
+        ok: false,
+        message: "You don't have permission to view these requests",
+      });
+    }
+    const result = await db.query(
+      `SELECT 
+      r.id AS request_id, 
+      r.status, 
+      u.name AS requester_name, 
+      u.email AS requester_email 
+      FROM requests r JOIN users u ON r.requester_id=u.id 
+      JOIN donation_items i ON r.item_id=i.id 
+      WHERE r.item_id=$1 AND i.donor_id=$2`,
+      [item_id, donor_id]
+    );
+    return res.status(200).json({
+      ok: true,
+      requests: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Error fetching requests',
+    });
+  }
 };
 
 module.exports = {
