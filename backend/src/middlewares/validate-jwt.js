@@ -17,13 +17,12 @@ const validateJWT = (req, res = response, next) => {
     req.full_name = full_name;
     next();
   } catch (error) {
+    console.error('JWT Validation Error:', error.message);
     return res.status(401).json({
       ok: false,
       message: 'Invalid token',
     });
   }
-
-  next();
 };
 
 module.exports = {

@@ -156,11 +156,13 @@ const acceptRequest = async (req, res = response) => {
       });
     }
 
+    // Reject all the other applications
     await client.query(
       "UPDATE requests SET status = 'rejected', updated_at = NOW() WHERE item_id=$1 AND status='pending' AND id!=$2",
       [item_id, request_id]
     );
 
+    // Change the item's status to 'reserved'
     await client.query(
       "UPDATE donation_items SET status = 'reserved', updated_at = NOW() WHERE id=$1",
       [item_id]

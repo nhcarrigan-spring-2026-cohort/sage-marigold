@@ -5,7 +5,7 @@ const { validateFields } = require('./validate-fields');
 
 const validateUUID = (paramName) => {
   return [
-    param(paramName, `$paramName must be a valid UUID`).isUUID(),
+    param(paramName, `${paramName} must be a valid UUID`).isUUID(),
     validateFields(), // This trriggers the 400 error if the above fails
   ];
 };
