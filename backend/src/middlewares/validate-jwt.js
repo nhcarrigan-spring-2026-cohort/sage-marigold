@@ -7,24 +7,28 @@ const validateJWT = (req, res = response, next) => {
   if (!token) {
     return res.status(401).json({
       ok: false,
-      message: 'No token provided',
+      msg: 'No token provided'
     });
   }
 
   try {
     const { uid, full_name } = jwt.verify(token, process.env.JWT_SECRET);
-    req.uid = uid;
-    req.full_name = full_name;
+
+    // Set req.user object for consistency with controllers
+    req.user = {
+      id: uid,
+      full_name
+    };
+
     next();
   } catch (error) {
-    console.error('JWT Validation Error:', error.message);
     return res.status(401).json({
       ok: false,
-      message: 'Invalid token',
+      msg: 'Invalid token'
     });
   }
 };
 
 module.exports = {
-  validateJWT,
+  validateJWT
 };

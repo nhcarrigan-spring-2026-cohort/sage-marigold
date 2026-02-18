@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/db');
+const express = require('express');
+const cors = require('cors');
+const db = require('./config/db');
 
 const app = express();
 
@@ -11,8 +14,16 @@ app.use('/api/requests', require('./routes/requestRoutes'));
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Sage-Marigold Backend!');
+app.get('/', (req, res) => {
+  res.send('Welcome to the Sage-Marigold Backend!');
 });
 
+app.get('/health', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'backend',
+    timestamp: new Date().toISOString(),
+  });
 app.get('/health', (req, res) => {
   res.json({
     ok: true,
@@ -31,6 +42,17 @@ app.get('/test-db', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: 'Database connection failed :(' });
+  }
+app.get('/test-db', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM test_connection');
+    res.json({
+      message: 'Database connection is working!',
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error('Database connection error:', err.message);
     res.status(500).json({ error: 'Database connection failed :(' });
   }
 });
