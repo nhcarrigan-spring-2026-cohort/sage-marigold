@@ -14,7 +14,7 @@ const createRequest = async (req, res = response) => {
   }
   let client;
   try {
-    client = await db.connect(); // Get a specific connection
+    client = await db.pool.connect(); // Get a specific connection
     await client.query('BEGIN'); // Start the transaction
 
     const itemResult = await client.query(
@@ -103,7 +103,7 @@ const acceptRequest = async (req, res = response) => {
   const donor_id = req.user.id; // Grabbing the logged in user's ID (it must be the owner)
   let client;
   try {
-    client = await db.connect(); // Get a specific connection
+    client = await db.pool.connect(); // Get a specific connection
     await client.query('BEGIN'); // Start the transaction
 
     const requestCheck = await client.query(
@@ -196,7 +196,7 @@ const cancelRequest = async (req, res = response) => {
   const { request_id: paramId } = req.params;
   let client;
   try {
-    client = await db.connect();
+    client = await db.pool.connect();
     await client.query('BEGIN');
     const currentRequestState = await client.query(
       'SELECT id, item_id, status FROM requests WHERE id = $1 AND requester_id = $2 FOR UPDATE',
