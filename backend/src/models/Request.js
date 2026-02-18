@@ -16,7 +16,7 @@ const Request = {
   // Helper for getItemRequests (Query for a donor to see applicants for their item)
   findByItem: async (itemId, donorId) => {
     const query = `
-      SELECT r.id AS request_id, r.status, u.name AS requester_name, u.email AS requester_email 
+      SELECT r.id AS request_id, r.status, r.application_data, u.name AS requester_name, u.email AS requester_email 
       FROM requests r 
       JOIN users u ON r.requester_id=u.id 
       JOIN donation_items i ON r.item_id=i.id 

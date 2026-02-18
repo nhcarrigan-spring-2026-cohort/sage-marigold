@@ -224,13 +224,17 @@ const cancelRequest = async (req, res = response) => {
         "UPDATE donation_items SET status = 'available', updated_at = NOW() WHERE id=$1",
         [item_id]
       );
-    }
-    if (status === 'pending' || status === 'accepted') {
+      // returning the 'rejected' applications back to 'pending'
       await client.query(
-        "UPDATE requests SET status='cancelled', updated_at = NOW() WHERE id=$1 RETURNING *",
-        [currentRequestState.rows[0].id]
+        "UPDATE requests SET status='pending', updated_at = NOW() WHERE item_id=$1 AND status='rejected'",
+        [item_id]
       );
     }
+    // The requester can cancel their request while its status is 'pending' or 'accepted'
+    await client.query(
+      "UPDATE requests SET status='cancelled', updated_at = NOW() WHERE id=$1",
+      [currentRequestState.rows[0].id]
+    );
     await client.query('COMMIT');
     return res.status(200).json({
       ok: true,
