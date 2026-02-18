@@ -33,23 +33,22 @@ router.get('/me', validateJWT, getMyRequests);
 // GET /api/requests/item/:item_id (Donor seeing all requests for one item)
 router.get(
   '/item/:item_id',
-  [validateJWT, validateUUID('item_id')],
+  [validateJWT, ...validateUUID('item_id')],
   getItemRequests
 );
 
 // PATCH /api/requests/:request_id/status (Donor accepting a request)
 router.patch(
   '/:request_id/status',
-  [validateJWT, validateUUID('request_id')],
+  [validateJWT, ...validateUUID('request_id')],
   acceptRequest
 );
 
 // PATCH /api/requests/:request_id/cancel (Requester cancelling their own)
 router.patch(
   '/:request_id/cancel',
-  [validateJWT, validateUUID('request_id')],
+  [validateJWT, ...validateUUID('request_id')],
   cancelRequest
 );
 
 module.exports = router;
-

@@ -1,4 +1,10 @@
-const { createItem, getAllAvailableItems, getAllItems, updateItemStatus, getItemById } = require('../models/Item');
+const {
+  createItem,
+  getAllAvailableItems,
+  getAllItems,
+  updateItemStatus,
+  getItemById,
+} = require('../models/Item');
 
 //Create a new donation item
 const createNewItem = async (req, res) => {
@@ -8,18 +14,25 @@ const createNewItem = async (req, res) => {
     if (!title || !description || !category || !location) {
       return res.status(400).json({
         ok: false,
-        msg: 'Please provide all required fields: title, description, category, location'
+        msg: 'Please provide all required fields: title, description, category, location',
       });
     }
 
     // Get donor_id from authenticated user
     const donor_id = req.user.id;
 
-    const newItem = await createItem({ title, description, category, location, condition, donor_id });
+    const newItem = await createItem({
+      title,
+      description,
+      category,
+      location,
+      condition,
+      donor_id,
+    });
 
     res.status(201).json({
       ok: true,
-      item: newItem
+      item: newItem,
     });
   } catch (error) {
     console.error('Error creating item:', error);
@@ -58,9 +71,9 @@ const changeItemStatus = async (req, res) => {
     const validStatuses = ['available', 'reserved', 'claimed', 'withdrawn'];
 
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ 
-        ok: false, 
-        msg: 'Invalid status value. Must be one of: available, reserved, claimed, withdrawn' 
+      return res.status(400).json({
+        ok: false,
+        msg: 'Invalid status value. Must be one of: available, reserved, claimed, withdrawn',
       });
     }
 
@@ -74,10 +87,10 @@ const changeItemStatus = async (req, res) => {
     if (existingItem.donor_id !== req.user.id) {
       return res.status(403).json({
         ok: false,
-        msg: 'You are not authorized to update this item'
+        msg: 'You are not authorized to update this item',
       });
     }
-    
+
     const updatedItem = await updateItemStatus(id, status);
 
     if (!updatedItem) {
@@ -87,7 +100,9 @@ const changeItemStatus = async (req, res) => {
     res.json({ ok: true, item: updatedItem });
   } catch (error) {
     console.error('Error updating item status:', error);
-    res.status(500).json({ ok: false, msg: 'Server error updating item status' });
+    res
+      .status(500)
+      .json({ ok: false, msg: 'Server error updating item status' });
   }
 };
 
@@ -113,5 +128,5 @@ module.exports = {
   listAvailableItems,
   listTotalItems,
   changeItemStatus,
-  getItem
+  getItem,
 };
