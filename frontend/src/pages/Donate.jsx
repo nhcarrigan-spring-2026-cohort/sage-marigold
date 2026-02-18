@@ -311,7 +311,7 @@ const Donate = () => {
                   type="button"
                   onClick={triggerFileInput}
                   key={`empty-${index}`}
-                  className="w-full aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 hover:border-emerald-500 transition-colors"
+                  className="w-full cursor-pointer aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 hover:border-emerald-500 transition-colors"
                 >
                   <FaPlus className="text-gray-400 text-lg mb-1" />
                   <span className="text-xs text-gray-500">Add Photo</span>
@@ -328,7 +328,7 @@ const Donate = () => {
               </p>
             </div>
           </div>
-
+              {/* item title */}
           <div className="space-y-2">
             <label htmlFor="title" className="flex items-center justify-between text-sm font-medium">
               <span>Item Title *</span>
@@ -341,7 +341,7 @@ const Donate = () => {
               onChange={handleInputChange}
               maxLength={100}
               placeholder="e.g., Black leather bag in good condition"
-              className={`w-full px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
+              className={`w-full cursor-pointer px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
                 errors.title ? 'border-red-500' : 'border-transparent'
               }`}
             />
@@ -350,6 +350,7 @@ const Donate = () => {
             )}
           </div>
 
+            {/* item description */}
           <div className="space-y-2">
             <label htmlFor="description" className="flex items-center justify-between text-sm font-medium">
               <span>Description *</span>
@@ -362,7 +363,7 @@ const Donate = () => {
               maxLength={500}
               rows={4}
               placeholder="Describe the item's condition, size, any defects, etc."
-              className={`w-full px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 resize-none ${
+              className={`w-full cursor-pointer px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 resize-none ${
                 errors.description ? 'border-red-500' : 'border-transparent'
               }`}
             />
@@ -372,7 +373,7 @@ const Donate = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
+            {/* item category */}
             <div className="space-y-2">
               <label htmlFor="category" className="flex items-center gap-2 text-sm font-medium">
                 Category *
@@ -381,7 +382,7 @@ const Donate = () => {
                 id="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className={`w-full rounded-md border px-3 py-2 text-sm bg-[#f3f3f5] outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
+                className={`w-full rounded-md cursor-pointer border px-3 py-2 text-sm bg-[#f3f3f5] outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
                   errors.category ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
@@ -400,7 +401,7 @@ const Donate = () => {
                 <p className="text-sm text-red-600">{errors.category}</p>
               )}
             </div>
-
+              {/* item condition */}
             <div className="space-y-2">
               <label htmlFor="condition" className="flex items-center gap-2 text-sm font-medium">
                 Condition *
@@ -409,7 +410,7 @@ const Donate = () => {
                 id="condition"
                 value={formData.condition}
                 onChange={handleInputChange}
-                className={`w-full rounded-md border px-3 py-2 text-sm bg-[#f3f3f5] outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
+                className={`w-full cursor-pointer rounded-md border px-3 py-2 text-sm bg-[#f3f3f5] outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
                   errors.condition ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
@@ -425,7 +426,7 @@ const Donate = () => {
               )}
             </div>
           </div>
-
+              {/* item location */}
           <div className="space-y-2">
             <label htmlFor="location" className="text-sm font-medium">
               Pickup Location *
@@ -436,7 +437,7 @@ const Donate = () => {
               value={formData.location}
               onChange={handleInputChange}
               placeholder="E.g nearest landmarks or streets"
-              className={`w-full px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
+              className={`w-full cursor-pointer px-3 py-2 rounded-md border bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 ${
                 errors.location ? 'border-red-500' : 'border-transparent'
               }`}
             />
@@ -447,7 +448,7 @@ const Donate = () => {
               <p className="text-sm text-red-600">{errors.location}</p>
             )}
           </div>
-
+            {/* pickup instructions */}
           <div className="space-y-2">
             <label htmlFor="pickupInstructions" className="text-sm font-medium">
               Pickup Instructions (Optional)
@@ -458,7 +459,7 @@ const Donate = () => {
               onChange={handleInputChange}
               rows={3}
               placeholder="e.g., Available weekends only, call before coming, etc."
-              className="w-full px-3 py-2 rounded-md border border-transparent bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 resize-none"
+              className="w-full cursor-pointer px-3 py-2 rounded-md border border-transparent bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500 resize-none"
             />
           </div>
 

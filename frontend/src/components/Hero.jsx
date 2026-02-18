@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import heroBanner from "../assets/hero_banner.png";
 import { memo, useState } from "react";
 
@@ -20,7 +22,8 @@ const Hero = () => {
         </p>
       </div>
       <div className="inline-flex sm:flex-row items-center justify-center gap-5 bg-white/5 backdrop-blur-md border border-white/5 p-2 rounded-2xl shadow-xl">        
-        <button
+        <Link
+          to="/donate"
           onClick={() => setActiveButton("donate")}
           className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md
             ${activeButton === "donate"
@@ -28,8 +31,9 @@ const Hero = () => {
               : "bg-transparent text-white hover:bg-white/10"
             }`}>
           I want to donate
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/explore"
           onClick={() => setActiveButton("receive")}
           className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300
             ${activeButton === "receive"
@@ -37,7 +41,7 @@ const Hero = () => {
               : "bg-transparent text-white hover:bg-white/10"
             }`}>
           I want to receive
-        </button>
+        </Link>
       </div>
     </div>
   );
