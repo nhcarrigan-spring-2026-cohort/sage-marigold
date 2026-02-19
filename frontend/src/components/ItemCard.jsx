@@ -6,16 +6,25 @@ const ItemCard = ({
   description,
   condition,
   location,
-  date_posted,
-  image,
+  created_at,
+  images,
   category,
   onRequest,
 }) => {
+
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
   return (
     <div className="bg-white h-full border relative border-gray-200 rounded-xl overflow-hidden gap-4 flex flex-col justify-between hover:shadow-lg transition-shadow">
       <div className="flex items-center justify-center h-48">
         <img
-          src={image}
+          src={images[0]}
           alt={title}
           className="max-w-full max-h-full object-contain"
         />
@@ -24,7 +33,6 @@ const ItemCard = ({
         </span>
       </div>
 
-      {/* Content */}
       <div className="pb-6 p-4">
         <h3 className="font-semibold mb-2 line-clamp-1">{title}</h3>
 
@@ -32,7 +40,6 @@ const ItemCard = ({
           {description}
         </p>
 
-        {/* Meta info */}
 
         <div className="space-y-2 ">
           {" "}
@@ -51,12 +58,11 @@ const ItemCard = ({
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <FaCalendar />
-            <span>Posted {date_posted}</span>
+            <span>{formatDate(created_at)}</span>
           </div>
         </div>
       </div>
 
-      {/* CTA */}
       <div className="flex items-center [.border-t]:pt-6 p-4 pt-0">
         <button
           onClick={onRequest}
