@@ -1,7 +1,14 @@
 const pool = require('../config/db');
 
 //Create a new donation item
-const createItem = async ({ title, description, category, location, condition, donor_id }) => {
+const createItem = async ({
+  title,
+  description,
+  category,
+  location,
+  condition,
+  donor_id,
+}) => {
   const result = await pool.query(
     `INSERT INTO donation_items (title, description, category, location, condition, donor_id)
      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
@@ -9,7 +16,6 @@ const createItem = async ({ title, description, category, location, condition, d
   );
   return result.rows[0];
 };
-
 
 // Get all items with status "available"
 
@@ -56,5 +62,5 @@ module.exports = {
   getAllAvailableItems,
   getAllItems,
   updateItemStatus,
-  getItemById
+  getItemById,
 };

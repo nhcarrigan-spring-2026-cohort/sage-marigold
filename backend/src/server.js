@@ -8,6 +8,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/items', require('./routes/itemRoutes'));
+app.use('/api/requests', require('./routes/requestRoutes'));
+
 app.get('/', (req, res) => {
   res.send('Welcome to the Sage-Marigold Backend!');
 });

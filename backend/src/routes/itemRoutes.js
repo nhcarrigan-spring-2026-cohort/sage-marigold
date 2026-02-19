@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { 
-  createNewItem, 
-  listAvailableItems, 
-  listTotalItems, 
-  changeItemStatus, 
-  getItem 
+const {
+  createNewItem,
+  listAvailableItems,
+  listTotalItems,
+  changeItemStatus,
+  getItem,
 } = require('../controllers/itemController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 
