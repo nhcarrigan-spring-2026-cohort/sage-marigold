@@ -4,11 +4,12 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState(false);
   const debounceRef = useRef(null);
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!query) {
+    if (!query || selected) {
       setSuggestions([]);
       return;
     }
@@ -41,11 +42,12 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
         setLoading(false);
       }
     }, 400); 
-  }, [query]);
+  }, [query, selected]);
 
   const handleSelect = (s) => {
     setQuery(s.address);
     setSuggestions([]);
+    setSelected(true);
     onLocationSelect({
       address: s.address,
       latitude: s.lat,
@@ -68,10 +70,14 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setSelected(false);
+        }}
         placeholder="Enter pickup location"
         className="w-full px-3 py-2 rounded-md border border-transparent bg-[#f3f3f5] text-sm outline-none transition-all focus:ring-2 focus:ring-emerald-500"
       />
+      
       {loading && (
         <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-md shadow-md p-2 text-sm text-gray-500">
           Searching...
@@ -90,7 +96,8 @@ const LocationAutocomplete = ({ onLocationSelect }) => {
           ))}
         </ul>
       )}
-      {query && !loading && suggestions.length === 0 && (
+
+      {query && !loading && suggestions.length === 0 && !selected && (
         <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-md shadow-md p-2 text-sm text-gray-500">
           No results found
         </div>
