@@ -8,7 +8,6 @@ const Donate = () => {
   const maxImages = 5;
 
   const [formData, setFormData] = useState({
-<<<<<<< HEAD
     title: '',
     description: '',
     category: '',
@@ -17,14 +16,6 @@ const Donate = () => {
     pickupInstructions: '',
     latitude: null,
     longitude: null,
-=======
-    title: "",
-    description: "",
-    category: "",
-    condition: "",
-    location: "",
-    pickupInstructions: "",
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
   });
 
   const [errors, setErrors] = useState({});
@@ -134,13 +125,11 @@ const Donate = () => {
       newErrors.condition = "Please select a condition";
     }
 
-<<<<<<< HEAD
     if (!formData.location || !formData.latitude || !formData.longitude) {
       newErrors.location = 'Please select a valid pickup location from suggestions';
-=======
+    }
     if (!formData.location.trim()) {
       newErrors.location = "Pickup location is required";
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
     }
 
     if (images.length === 0) {
@@ -153,7 +142,6 @@ const Donate = () => {
 
   const resetForm = () => {
     setFormData({
-<<<<<<< HEAD
       title: '',
       description: '',
       category: '',
@@ -162,14 +150,6 @@ const Donate = () => {
       pickupInstructions: '',
       latitude: null, 
       longitude: null,
-=======
-      title: "",
-      description: "",
-      category: "",
-      condition: "",
-      location: "",
-      pickupInstructions: "",
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
     });
 
     images.forEach((image) => URL.revokeObjectURL(image.preview));
@@ -517,17 +497,12 @@ const Donate = () => {
               )}
             </div>
           </div>
-<<<<<<< HEAD
-=======
           {/* item location */}
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
           <div className="space-y-2">
             <label htmlFor="location" className="text-sm font-medium">
               Pickup Location *
             </label>
-<<<<<<< HEAD
             <LocationAutocomplete onLocationSelect={handleLocationSelect} />
-=======
             <input
               id="location"
               type="text"
@@ -538,7 +513,6 @@ const Donate = () => {
                 errors.location ? "border-red-500" : "border-transparent"
               }`}
             />
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
             <p className="text-xs text-gray-500">
               General area only. Exact address shared after confirmation.
             </p>
@@ -546,10 +520,7 @@ const Donate = () => {
               <p className="text-sm text-red-600">{errors.location}</p>
             )}
           </div>
-<<<<<<< HEAD
-=======
           {/* pickup instructions */}
->>>>>>> db0621e (feat: implement Cloudinary image upload and full-stack donation flow)
           <div className="space-y-2">
             <label htmlFor="pickupInstructions" className="text-sm font-medium">
               Pickup Instructions (Optional)
