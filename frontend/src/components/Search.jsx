@@ -1,12 +1,12 @@
-import { LuSearch  } from "react-icons/lu";
+import { LuSearch } from "react-icons/lu";
 
-const Search = ({search, setSearch}) => {
+const Search = ({ search, setSearch }) => {
   return (
     <div className="w-full relative md:max-w-md border-2 border-emerald-300 rounded-3xl">
-        <div className="absolute inset-y-0 left-0 flex items-center  pl-4 pointer-events-none">
-            <LuSearch className= "text-[hsl(200,15%,8%)]"/>
-        </div>
-        
+      <div className="absolute inset-y-0 left-0 flex items-center  pl-4 pointer-events-none">
+        <LuSearch className="text-[hsl(200,15%,8%)]" />
+      </div>
+
       <input
         name="search"
         type="text"
@@ -16,6 +16,6 @@ const Search = ({search, setSearch}) => {
         onChange={(e) => setSearch(e.target.value)}
       />
     </div>
-  )
-}
-export default Search
+  );
+};
+export default Search;

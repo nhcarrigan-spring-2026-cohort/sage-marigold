@@ -6,9 +6,11 @@ export const mockDonations = [
     category: "Electronics",
     condition: "Excellent",
     location: "Lagos, Nigeria",
-    images: ["https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400"],
+    images: [
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400",
+    ],
     status: "available",
-    created_at: "2026-02-10T10:00:00Z"
+    created_at: "2026-02-10T10:00:00Z",
   },
   {
     id: "2",
@@ -19,7 +21,7 @@ export const mockDonations = [
     location: "Abuja, Nigeria",
     images: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400"],
     status: "available",
-    created_at: "2026-02-11T14:30:00Z"
+    created_at: "2026-02-11T14:30:00Z",
   },
   {
     id: "3",
@@ -30,7 +32,7 @@ export const mockDonations = [
     location: "London, UK",
     images: ["https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400"],
     status: "available",
-    created_at: "2026-02-12T09:15:00Z"
+    created_at: "2026-02-12T09:15:00Z",
   },
   {
     id: "4",
@@ -39,8 +41,10 @@ export const mockDonations = [
     category: "Furniture",
     condition: "Excellent",
     location: "New York, USA",
-    images: ["https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400"],
+    images: [
+      "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400",
+    ],
     status: "available",
-    created_at: "2026-02-13T11:20:00Z"
-  }
+    created_at: "2026-02-13T11:20:00Z",
+  },
 ];

@@ -1,5 +1,5 @@
 import SkeletonCard from "./SkeletonCard";
-import Filter from "./Filter"; 
+import Filter from "./Filter";
 import { useEffect, useState } from "react";
 import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
@@ -21,13 +21,19 @@ const ItemList = () => {
     const fetchDonations = async () => {
       try {
         setLoading(true);
-        
         let allDonations = [];
+
         try {
-          const response = await fetch('http://localhost:3000/api/donations');
+          // Use your Codespace URL
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/items/available`,
+          );
+
           if (response.ok) {
             const data = await response.json();
-            allDonations = data.length > 0 ? data : mockDonations;
+            //assign items from the form or use mock data as fall back
+            allDonations =
+              data.ok && data.items?.length > 0 ? data.items : mockDonations;
           } else {
             allDonations = mockDonations;
           }
@@ -39,33 +45,39 @@ const ItemList = () => {
         let filtered = [...allDonations];
 
         if (filters.category) {
-          filtered = filtered.filter(item => item.category === filters.category);
+          filtered = filtered.filter(
+            (item) => item.category === filters.category,
+          );
         }
 
         if (filters.condition) {
-          filtered = filtered.filter(item => item.condition === filters.condition);
+          filtered = filtered.filter(
+            (item) => item.condition === filters.condition,
+          );
         }
 
         if (filters.location) {
-          filtered = filtered.filter(item => 
-            item.location.toLowerCase().includes(filters.location.toLowerCase())
+          filtered = filtered.filter((item) =>
+            item.location
+              ?.toLowerCase()
+              .includes(filters.location.toLowerCase()),
           );
         }
 
         if (filters.search) {
           const searchLower = filters.search.toLowerCase();
-          filtered = filtered.filter(item => 
-            item.title.toLowerCase().includes(searchLower) ||
-            item.description.toLowerCase().includes(searchLower)
+          filtered = filtered.filter(
+            (item) =>
+              item.title?.toLowerCase().includes(searchLower) ||
+              item.description?.toLowerCase().includes(searchLower),
           );
         }
 
         setDonations(filtered);
         setError(null);
-
-      } catch (error) {
-        console.error("Error processing donations:", error);
-        setError(error);
+      } catch (err) {
+        console.error("Error processing donations:", err);
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -113,7 +125,14 @@ const ItemList = () => {
             Try adjusting your filters or search term
           </p>
           <button
-            onClick={() => setFilters({ category: "", condition: "", location: "", search: "" })}
+            onClick={() =>
+              setFilters({
+                category: "",
+                condition: "",
+                location: "",
+                search: "",
+              })
+            }
             className="bg-emerald-700 text-white px-6 py-3 rounded-lg hover:bg-emerald-800 transition"
           >
             Clear Filters

@@ -1,23 +1,30 @@
 import { memo, useState } from "react";
-import { NavLink,Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-    const getLinkClass = ({ isActive }) => {
-       return `hover:text-gray-600 ${
-      isActive 
-        ? "text-emerald-700 font-semibold border-b-2 border-emerald-700" 
+  const getLinkClass = ({ isActive }) => {
+    return `hover:text-gray-600 ${
+      isActive
+        ? "text-emerald-700 font-semibold border-b-2 border-emerald-700"
         : "text-black"
     }`;
-    }
+  };
 
   return (
     <nav className="flex justify-between sticky top-0 z-50  items-center py-4 px-8 bg-[#f5f5f5] shadow-md">
       <h1 className="text-2xl font-bold">
-        <img src="/project_logo.png" alt="Sage Marigold Logo" className="h-12 w-12 inline mr-2" />
-        <Link className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600" to="/">
+        <img
+          src="/project_logo.png"
+          alt="Sage Marigold Logo"
+          className="h-12 w-12 inline mr-2"
+        />
+        <Link
+          className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600"
+          to="/"
+        >
           HELPING HANDS
         </Link>
       </h1>
@@ -25,9 +32,15 @@ const Navbar = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden flex flex-col gap-1 cursor-pointer"
       >
-        <span className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "rotate-45 translate-y-1" : ""}`}></span>
-        <span className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "opacity-0" : ""}`}></span>
-        <span className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "-rotate-45 -translate-y-1" : ""}`}></span>
+        <span
+          className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "rotate-45 translate-y-1" : ""}`}
+        ></span>
+        <span
+          className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "opacity-0" : ""}`}
+        ></span>
+        <span
+          className={`w-6 h-0.5 transition-all duration-200 bg-black ${isOpen ? "-rotate-45 -translate-y-1" : ""}`}
+        ></span>
       </button>
       <ul className="hidden md:flex gap-6 items-center">
         <li className="hover:border-b-2 hover:border-emerald-700">
@@ -110,5 +123,3 @@ const Navbar = () => {
 };
 
 export default memo(Navbar);
-
-  

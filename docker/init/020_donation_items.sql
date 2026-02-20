@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS donation_items (
   category VARCHAR(100) NOT NULL,
   location VARCHAR(255) NOT NULL,
   condition VARCHAR(50),
+  pickup_instructions TEXT,
+  images TEXT[] DEFAULT '{}',
   status VARCHAR(50) DEFAULT 'available' CHECK (status IN ('available', 'reserved', 'claimed', 'withdrawn')),
   donor_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT NOW(),

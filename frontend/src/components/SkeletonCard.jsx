@@ -5,7 +5,11 @@ function SkeletonCard() {
     <div className="bg-white h-full border border-gray-200 rounded-xl overflow-hidden gap-4 flex flex-col justify-between">
       <div className="flex items-center justify-center h-48 relative">
         <div className="w-full h-full bg-gray-100">
-          <Skeleton height="100%" className="!rounded-none" containerClassName="h-full w-full block" />
+          <Skeleton
+            height="100%"
+            className="!rounded-none"
+            containerClassName="h-full w-full block"
+          />
         </div>
         <span className="bg-gray-100 text-black font-medium text-xs py-0.5 px-2 w-fit rounded-md overflow-hidden gap-1 justify-center items-center shrink-0 inline-flex left-3 top-3 absolute">
           <Skeleton width={60} height={12} />

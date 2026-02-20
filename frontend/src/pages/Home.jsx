@@ -50,7 +50,9 @@ const Home = () => {
             <IoCheckmarkDoneCircle className="text-emerald-700" />
           </div>
           <h4 className="font-semibold">Complete Donation</h4>
-          <p className="text-gray-600 ">Share a verification code to confirm the handoff. Done!</p>
+          <p className="text-gray-600 ">
+            Share a verification code to confirm the handoff. Done!
+          </p>
         </div>
       </div>
     </section>
