@@ -5,14 +5,26 @@ const createItem = async ({
   title,
   description,
   category,
-  location,
   condition,
+  location,
+  pickupInstructions,
   donor_id,
+  images,
 }) => {
   const result = await pool.query(
-    `INSERT INTO donation_items (title, description, category, location, condition, donor_id)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-    [title, description, category, location, condition, donor_id]
+    `INSERT INTO donation_items 
+    (title, description, category, condition, location, pickup_instructions, donor_id, images)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+    [
+      title,
+      description,
+      category,
+      condition,
+      location,
+      pickupInstructions,
+      donor_id,
+      images,
+    ]
   );
   return result.rows[0];
 };

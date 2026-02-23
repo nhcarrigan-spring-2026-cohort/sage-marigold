@@ -8,9 +8,10 @@ const {
   getItem,
 } = require('../controllers/itemController');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { uploadImages } = require('../middlewares/uploadMiddleware');
 
 // Protected routes (require authentication)
-router.post('/', validateJWT, createNewItem);
+router.post('/', [validateJWT, uploadImages], createNewItem);
 router.put('/:id/status', validateJWT, changeItemStatus);
 
 // Public routes
