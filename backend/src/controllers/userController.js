@@ -1,4 +1,4 @@
-const { db } = require('../config/db');
+const db = require('../config/db');
 const { response } = require('express');
 
 const getUserProfile = async (req, res = response) => {

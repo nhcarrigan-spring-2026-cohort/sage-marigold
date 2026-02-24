@@ -4,9 +4,15 @@ const Request = {
   // Helper for getMyRequests (Query for a requester to see their history)
   findByRequester: async (requesterId) => {
     const query = `
-      SELECT r.id, r.status, r.created_at, i.title AS item_name, i.description AS item_description
+      SELECT r.id, r.status, r.created_at, i.title AS item_name, i.description AS item_description,
+      u.full_name AS donor_name,
+      CASE 
+        WHEN r.status IN ('accepted', 'completed') THEN u.email 
+        ELSE NULL 
+      END AS donor_email
       FROM requests r 
       JOIN donation_items i ON r.item_id=i.id 
+      JOIN users u ON i.donor_id=u.id
       WHERE r.requester_id=$1
       ORDER BY r.created_at DESC`;
     const { rows } = await db.query(query, [requesterId]);
