@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { 
-  createNewItem, 
-  listAvailableItems, 
-  listTotalItems, 
-  changeItemStatus, 
-  getItem 
+const {
+  createNewItem,
+  listAvailableItems,
+  listTotalItems,
+  changeItemStatus,
+  getItem,
 } = require('../controllers/itemController');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { uploadImages } = require('../middlewares/uploadMiddleware');
 
 // Protected routes (require authentication)
-router.post('/', validateJWT, createNewItem);
+router.post('/', [validateJWT, uploadImages], createNewItem);
 router.put('/:id/status', validateJWT, changeItemStatus);
 
 // Public routes
