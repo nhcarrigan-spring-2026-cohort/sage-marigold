@@ -53,9 +53,15 @@ const getUserActivity = async (req, res = response) => {
         WHEN r.status='cancelled' THEN 'You have cancelled this request. This item is no longer in your active list.'
         WHEN r.status='completed' THEN 'You have successfully received this item. Thank you for being part of the community. Enjoy!'
         ELSE 'Waiting for donor response...'
-      END AS status_message
+      END AS status_message, 
+      u.full_name AS donor_name,
+      CASE 
+        WHEN r.status IN ('accepted', 'completed') THEN u.email 
+        ELSE NULL 
+      END AS donor_email
       FROM requests r 
       JOIN donation_items i ON r.item_id=i.id
+      JOIN users u ON i.donor_id=u.id
       WHERE requester_id=$1
       ORDER BY r.created_at DESC`,
       [currentUser_id]
