@@ -1,29 +1,68 @@
-const { createItem, getAllAvailableItems, getAllItems, updateItemStatus, getItemById } = require('../models/Item');
+const {
+  createItem,
+  getAllAvailableItems,
+  getAllItems,
+  updateItemStatus,
+  getItemById,
+} = require('../models/Item');
+const { uploadToCloudinary } = require('../services/cloudinaryService');
+//const db = require('../config/db');
 
 //Create a new donation item
 const createNewItem = async (req, res) => {
   try {
-    const { title, description, category, location, condition } = req.body;
+    const {
+      title,
+      description,
+      category,
+      condition,
+      location,
+      pickup_instructions: pickupInstructions,
+    } = req.body;
+    const donor_id = req.user.id;
 
-    if (!title || !description || !category || !location) {
+    if (!title || !description || !category || !condition || !location) {
       return res.status(400).json({
         ok: false,
-        msg: 'Please provide all required fields: title, description, category, location'
+        msg: 'Please provide all required fields: title, description, category,condition, location, pickupInstructions',
       });
     }
 
-    // Get donor_id from authenticated user
-    const donor_id = req.user.id;
+    if (!req.files || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ ok: false, msg: 'At least one image is required :(' });
+    }
 
-    const newItem = await createItem({ title, description, category, location, condition, donor_id });
+    const uploadPromises = req.files.map((file) =>
+      uploadToCloudinary(file.buffer)
+    );
+    const imageUrls = await Promise.all(uploadPromises);
+
+    const newItem = await createItem({
+      title,
+      description,
+      category,
+      condition,
+      location,
+      pickupInstructions,
+      donor_id,
+      images: imageUrls,
+    });
 
     res.status(201).json({
       ok: true,
-      item: newItem
+      item: newItem,
     });
   } catch (error) {
     console.error('Error creating item:', error);
-    res.status(500).json({ ok: false, msg: 'Server error creating item' });
+    res
+      .status(500)
+      .json({
+        ok: false,
+        msg: 'Server error creating item',
+        details: error.message,
+      });
   }
 };
 
@@ -58,9 +97,9 @@ const changeItemStatus = async (req, res) => {
     const validStatuses = ['available', 'reserved', 'claimed', 'withdrawn'];
 
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ 
-        ok: false, 
-        msg: 'Invalid status value. Must be one of: available, reserved, claimed, withdrawn' 
+      return res.status(400).json({
+        ok: false,
+        msg: 'Invalid status value. Must be one of: available, reserved, claimed, withdrawn',
       });
     }
 
@@ -74,10 +113,10 @@ const changeItemStatus = async (req, res) => {
     if (existingItem.donor_id !== req.user.id) {
       return res.status(403).json({
         ok: false,
-        msg: 'You are not authorized to update this item'
+        msg: 'You are not authorized to update this item',
       });
     }
-    
+
     const updatedItem = await updateItemStatus(id, status);
 
     if (!updatedItem) {
@@ -87,7 +126,9 @@ const changeItemStatus = async (req, res) => {
     res.json({ ok: true, item: updatedItem });
   } catch (error) {
     console.error('Error updating item status:', error);
-    res.status(500).json({ ok: false, msg: 'Server error updating item status' });
+    res
+      .status(500)
+      .json({ ok: false, msg: 'Server error updating item status' });
   }
 };
 
@@ -113,5 +154,5 @@ module.exports = {
   listAvailableItems,
   listTotalItems,
   changeItemStatus,
-  getItem
+  getItem,
 };

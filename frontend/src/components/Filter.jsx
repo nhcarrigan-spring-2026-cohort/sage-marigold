@@ -118,7 +118,7 @@ const Filter = ({ filters, setFilters }) => {
             <button
               onClick={() =>
                 setOpenDropdown(
-                  openDropdown === "condition" ? null : "condition"
+                  openDropdown === "condition" ? null : "condition",
                 )
               }
               className={`flex text-[12px] items-center cursor-pointer gap-2 border rounded-2xl py-1.75 px-[10.5px] ${

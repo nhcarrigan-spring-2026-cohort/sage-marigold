@@ -8,23 +8,28 @@ const ItemCard = ({
   location,
   created_at,
   images,
+  image,
   category,
   onRequest,
 }) => {
-
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
+  const displayImage =
+    Array.isArray(images) && images.length > 0
+      ? images[0]
+      : image || "/project_logo.png";
+
   return (
     <div className="bg-white h-full border relative border-gray-200 rounded-xl overflow-hidden gap-4 flex flex-col justify-between hover:shadow-lg transition-shadow">
       <div className="flex items-center justify-center h-48">
         <img
-          src={images[0]}
+          src={displayImage}
           alt={title}
           className="max-w-full max-h-full object-contain"
         />
@@ -39,7 +44,6 @@ const ItemCard = ({
         <p className="text-sm text-gray-600 mb-3 line-clamp-22">
           {description}
         </p>
-
 
         <div className="space-y-2 ">
           {" "}
