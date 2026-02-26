@@ -280,7 +280,7 @@ const getItemRequests = async (req, res = response) => {
   const donor_id = req.user.id; // the logged in donor
 
   try {
-    const itemCheck = await db.query(
+    const itemCheck = await db.pool.query(
       'SELECT donor_id FROM donation_items WHERE id=$1',
       [item_id]
     );
