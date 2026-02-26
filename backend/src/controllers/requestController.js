@@ -184,6 +184,20 @@ const acceptRequest = async (req, res = response) => {
 
     // Send emails to both parties
 
+    const emailSent = await sendEmail(
+      requestData.donor_email,
+      requestData.requester_email,
+      requestData.item_name
+    );
+    
+    // Response if email sending fails, but the request acceptance was successful. We don't want to rollback the transaction just because of an email issue
+    if (!emailSent) {
+      return res.status(200).json({
+        ok: true,
+        message: 'Request accepted successfully, but there was an issue sending notification emails'
+      })
+    };
+
     return res.status(200).json({
       ok: true,
       message: 'Request accepted and others rejected successfully',
