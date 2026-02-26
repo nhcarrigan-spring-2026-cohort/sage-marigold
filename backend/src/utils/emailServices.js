@@ -7,7 +7,7 @@ const sendEmail = async (donorEmail, requesterEmail, itemName, pickupInstruction
     <div style="font-family:Arial, Helvetica, sans-serif; line-height:1.5; color:#0b1220;">
         <h2 style="margin:0 0 8px 0;">Request Approved ✅</h2>
         <p style="margin:0 0 14px 0;">
-        The request for <strong>${safeItem}</strong> has been accepted.
+        The request for <strong>${itemName}</strong> has been accepted.
         Use the contact info below to coordinate pickup/delivery.
         </p>
 
@@ -80,4 +80,3 @@ module.exports = {
 
 
 // Armar el contenido del correo con HTML
-// Testear de nuevo el PR para ver de donde sale pickupInstuctions e incluirlo

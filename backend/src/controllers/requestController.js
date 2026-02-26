@@ -113,6 +113,7 @@ const acceptRequest = async (req, res = response) => {
         i.donor_id, 
         i.status AS item_status,
         i.title AS item_name,
+        i.pickup_instructions AS pickup_instructions,
         u_donor.email AS donor_email,
         u_requester.email AS requester_email 
       FROM requests r 
@@ -187,7 +188,8 @@ const acceptRequest = async (req, res = response) => {
     const emailSent = await sendEmail(
       requestData.donor_email,
       requestData.requester_email,
-      requestData.item_name
+      requestData.item_name,
+      requestData.pickup_instructions
     );
     
     // Response if email sending fails, but the request acceptance was successful. We don't want to rollback the transaction just because of an email issue
