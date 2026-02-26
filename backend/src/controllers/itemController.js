@@ -4,6 +4,7 @@ const {
   getAllItems,
   updateItemStatus,
   getItemById,
+  Items,
 } = require('../models/Item');
 const { uploadToCloudinary } = require('../services/cloudinaryService');
 //const db = require('../config/db');
@@ -134,6 +135,9 @@ const changeItemStatus = async (req, res) => {
 const getItem = async (req, res) => {
   try {
     const { id } = req.params;
+    if(id=='available'){
+      return getAvailableItems(req, res);
+    }
     const item = await getItemById(id);
 
     if (!item) {
@@ -147,10 +151,38 @@ const getItem = async (req, res) => {
   }
 };
 
+const getAvailableItems=async(req,res)=>{
+  console.log("SEARCHING WITH:", req.query);
+  try{
+    const filters = {
+      category: req.query.category,
+      condition: req.query.condition,
+      search: req.query.search,
+      location: req.query.location,
+      lat: req.query.lat,
+      lng: req.query.lng
+    };
+    const items = await Items.findAvailable(filters);
+    res.json({
+      ok: true,
+      items: items
+    });
+
+  }
+  catch(error){
+    console.error("Error in getAvailableItems controller:", error);
+    res.status(500).json({ 
+      ok: false, 
+      msg: "Internal server error. Could not fetch items (#_#)" 
+    });
+  }
+};
+
 module.exports = {
   createNewItem,
   listAvailableItems,
   listTotalItems,
   changeItemStatus,
   getItem,
+  getAvailableItems,
 };

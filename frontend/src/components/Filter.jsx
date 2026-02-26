@@ -22,13 +22,17 @@ const Filter = ({ filters, setFilters }) => {
   const conditions = ["New", "Like New", "Good", "Fair", "Poor"];
 
   const handleFilterChange = (filterType, value) => {
+    const oldValue=filters[filterType];
     setFilters({
       ...filters,
       [filterType]: value,
     });
 
-    if (value && !activeFilters.includes(value)) {
-      setActiveFilters([...activeFilters, value]);
+    if ((filterType==="category"||filterType==="condition")&&value){
+      setActiveFilters((prev)=>{
+        const withoutOld=prev.filter((tag)=>tag!==oldValue);
+        return [...withoutOld,value];
+      });
     }
   };
 
@@ -118,7 +122,7 @@ const Filter = ({ filters, setFilters }) => {
             <button
               onClick={() =>
                 setOpenDropdown(
-                  openDropdown === "condition" ? null : "condition",
+                  openDropdown === "condition" ? null : "condition"
                 )
               }
               className={`flex text-[12px] items-center cursor-pointer gap-2 border rounded-2xl py-1.75 px-[10.5px] ${
@@ -165,7 +169,7 @@ const Filter = ({ filters, setFilters }) => {
               type="text"
               placeholder="Location..."
               value={filters.location}
-              onChange={(e) => handleFilterChange("location", e.target.value)}
+              onChange={(e) => setFilters({...filters, location: e.target.value})}
               className="text-[12px] bg-transparent outline-none w-24 cursor-pointer placeholder:text-gray-500"
             />
           </div>

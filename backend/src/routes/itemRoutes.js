@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const {
   createNewItem,
-  listAvailableItems,
+  //listAvailableItems,
   listTotalItems,
   changeItemStatus,
   getItem,
+  getAvailableItems,
 } = require('../controllers/itemController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const { uploadImages } = require('../middlewares/uploadMiddleware');
@@ -15,7 +16,8 @@ router.post('/', [validateJWT, uploadImages], createNewItem);
 router.put('/:id/status', validateJWT, changeItemStatus);
 
 // Public routes
-router.get('/available', listAvailableItems);
+//router.get('/available', listAvailableItems);
+router.get('/available', getAvailableItems);
 router.get('/all', listTotalItems);
 router.get('/:id', getItem);
 

@@ -69,10 +69,55 @@ const getItemById = async (itemId) => {
   return result.rows[0] || null;
 };
 
+const Items = {
+  findAvailable: async ({ category, condition, search, location, lat, lng }) => {
+    let query = `SELECT * FROM donation_items WHERE status='available'`
+    let queryParams = [];
+    let paramIdx = 1;
+
+    if (category) {
+      query += ` AND category ILIKE $${paramIdx++}`;
+      queryParams.push(category);
+    }
+    if (condition) {
+      query += ` AND condition ILIKE $${paramIdx++}`;
+      queryParams.push(condition);
+    }
+    if (search) {
+      query += ` AND (title ILIKE $${paramIdx} OR description ILIKE $${paramIdx})`;
+      queryParams.push(`%${search}%`);
+      paramIdx++;
+    }
+    if (location) {
+      query += ` AND location ILIKE $${paramIdx++}`;
+      queryParams.push(`%${location}%`);
+    }
+
+    if (lat && lng) {
+      const latNum = parseFloat(lat);
+      const lngNum = parseFloat(lng);
+      query = `
+        SELECT *, 
+        (6371 * acos(cos(radians($${paramIdx})) * cos(radians(latitude)) * cos(radians(longitude) - radians($${paramIdx + 1})) + sin(radians($${paramIdx})) * sin(radians(latitude)))) AS distance 
+        FROM (${query}) as filtered_items
+        WHERE (6371 * acos(cos(radians($${paramIdx})) * cos(radians(latitude)) * cos(radians(longitude) - radians($${paramIdx + 1})) + sin(radians($${paramIdx})) * sin(radians(latitude)))) < 50
+        ORDER BY distance ASC
+      `;
+      queryParams.push(latNum, lngNum);
+    }
+    else{
+      query+=` ORDER BY created_at DESC`;
+    }
+    const result = await pool.query(query, queryParams);
+    return result.rows;
+  }
+};
+
 module.exports = {
   createItem,
   getAllAvailableItems,
   getAllItems,
   updateItemStatus,
   getItemById,
+  Items,
 };

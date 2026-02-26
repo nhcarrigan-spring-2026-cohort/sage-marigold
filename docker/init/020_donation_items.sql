@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS donation_items (
   description TEXT NOT NULL,
   category VARCHAR(100) NOT NULL,
   location VARCHAR(255) NOT NULL,
+  latitude FLOAT, 
+  longitude FLOAT,
   condition VARCHAR(50),
   pickup_instructions TEXT,
   images TEXT[] DEFAULT '{}',

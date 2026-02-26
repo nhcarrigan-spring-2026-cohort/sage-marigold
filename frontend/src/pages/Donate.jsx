@@ -4,6 +4,7 @@ import LocationAutocomplete from "../components/LocationAutoComplete.jsx";
 
 const Donate = () => {
   const [images, setImages] = useState([]);
+  const [resetKey, setResetKey] = useState(0);
   const fileInputRef = useRef(null);
   const maxImages = 5;
 
@@ -151,10 +152,9 @@ const Donate = () => {
       latitude: null, 
       longitude: null,
     });
-
+    setResetKey(prev => prev + 1);
     images.forEach((image) => URL.revokeObjectURL(image.preview));
     setImages([]);
-
     setErrors({});
   };
 
@@ -176,8 +176,6 @@ const Donate = () => {
       submitData.append("category", formData.category);
       submitData.append("condition", formData.condition);
       submitData.append("location", formData.location);
-      submitData.append("pickupInstructions", formData.pickupInstructions);
-
       submitData.append("pickup_instructions", formData.pickupInstructions);
 
       images.forEach((imgObj) => {
@@ -502,7 +500,7 @@ const Donate = () => {
             <label htmlFor="location" className="text-sm font-medium">
               Pickup Location *
             </label>
-            <LocationAutocomplete onLocationSelect={handleLocationSelect} />
+            <LocationAutocomplete key={resetKey} onLocationSelect={handleLocationSelect} />
             <input
               id="location"
               type="text"
