@@ -1,10 +1,10 @@
 
+
 import React, { use, useState } from 'react'
 import { eightLetters, isValidName, numbersCharacters, symbolsCharacters, } from '../code/validation'
 import { capitalCharacters } from "../code/validation"
 
 
-const SignUp = () => {
 
    const [email,setEmail] = useState()
    const[password,setPassword] = useState()
@@ -13,6 +13,7 @@ const SignUp = () => {
    const[lastName,setLastName] = useState()
    const[country,setCountry] = useState()
    const[loading,setLoading] = useState(false)
+
    
 
 
@@ -26,20 +27,20 @@ async function handleSubmit(e){
     alert("Passwords do not match");
     return;
   }
-   if(!eightLetters(password,checkPassword)){
+   if(!eightLetters(password)){
     alert("Password must have more than 8 characters");
     return;
    }
 
-    if(!capitalCharacters(password,checkPassword)){
-      alert("Password and check password must contain a Capital Letter")
+    if(!capitalCharacters(password)){
+      alert("Password must contain a Capital Letter")
       return
      }
-      if(!symbolsCharacters(password,checkPassword)){
+      if(!symbolsCharacters(password)){
       alert("Password must contain a symbol")
       return
      }
-     if(!numbersCharacters(password,checkPassword)){
+     if(!numbersCharacters(password)){
       alert("Password must contain a number")
       return
      }
@@ -122,10 +123,15 @@ async function handleSubmit(e){
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
-            type="password"
             placeholder="Password"
             required
-          />
+            />
+                 <label for="check"></label>
+                
+                   
+                   
+           
+       
           <label htmlFor='checkPassword'>Check Password</label>
            <input
             className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 "
@@ -145,7 +151,7 @@ async function handleSubmit(e){
               onChange={(e) => setCountry(e.target.value)}
               disabled={loading}
               type='text'
-              placeholder='country'
+              placeholder='Country'
               required
               />
 
@@ -162,13 +168,13 @@ async function handleSubmit(e){
           disabled={loading}
           type="submit"
         >
-          {loading ? "Logging in..." : "Sign Up"}
+          {loading ? "Signing in" : "Sign Up"}
 
            
         </button>
       </form>
     </div>
   );  
-}
+
 
 export default SignUp;
