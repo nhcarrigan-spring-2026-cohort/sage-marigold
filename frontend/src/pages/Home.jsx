@@ -71,6 +71,46 @@ const Home = () => {
             </button>
           </div>
         </div>
+        <div className="max-w-6xl mx-auto text-center pt-20 px-8 mb-30">
+          <h2 className="text-4xl font-bold text-gray-900">
+            Why Helping Hands?
+          </h2>
+          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+            We believe in a circular economy where every resource is valued and every
+            neighbor is supported.
+          </p>
+
+          {/* Features */}
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-6">
+                <FaRecycle className="text-emerald-500 text-2xl" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Reducing Waste</h3>
+              <p className="text-gray-600 max-w-xs">
+                Keeping functional items out of landfills by giving them a second life in a new home.
+              </p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-6">
+                <MdPeopleAlt className="text-emerald-500 text-2xl" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Building Community</h3>
+              <p className="text-gray-600 max-w-xs">
+                Connecting neighbors through acts of kindness and direct peer-to-peer sharing.
+              </p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-6">
+                <IoShieldCheckmarkOutline className="text-emerald-500 text-2xl" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4">Dignified Giving</h3>
+              <p className="text-gray-600 max-w-xs">
+                A respectful platform where requesting help is as easy and dignified as browsing a store.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
   );
 };
