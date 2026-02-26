@@ -56,13 +56,11 @@ const createNewItem = async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating item:', error);
-    res
-      .status(500)
-      .json({
-        ok: false,
-        msg: 'Server error creating item',
-        details: error.message,
-      });
+    res.status(500).json({
+      ok: false,
+      msg: 'Server error creating item',
+      details: error.message,
+    });
   }
 };
 
