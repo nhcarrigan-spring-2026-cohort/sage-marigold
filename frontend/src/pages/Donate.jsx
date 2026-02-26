@@ -21,6 +21,7 @@ const Donate = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -151,6 +152,7 @@ const Donate = () => {
       latitude: null, 
       longitude: null,
     });
+    setResetKey(prev => prev + 1);
 
     images.forEach((image) => URL.revokeObjectURL(image.preview));
     setImages([]);
@@ -176,7 +178,6 @@ const Donate = () => {
       submitData.append("category", formData.category);
       submitData.append("condition", formData.condition);
       submitData.append("location", formData.location);
-      submitData.append("pickupInstructions", formData.pickupInstructions);
 
       submitData.append("pickup_instructions", formData.pickupInstructions);
 
@@ -502,7 +503,7 @@ const Donate = () => {
             <label htmlFor="location" className="text-sm font-medium">
               Pickup Location *
             </label>
-            <LocationAutocomplete onLocationSelect={handleLocationSelect} />
+            <LocationAutocomplete key={resetKey} onLocationSelect={handleLocationSelect} />
             <p className="text-xs text-gray-500">
               General area only. Exact address shared after confirmation.
             </p>
