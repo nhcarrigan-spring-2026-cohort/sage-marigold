@@ -19,9 +19,7 @@ const sendEmail = async (donorEmail, requesterEmail, itemName, pickupInstruction
 
         <div style="border:1px solid #e7e9f0; border-radius:12px; padding:12px;">
         <div style="font-weight:700; margin-bottom:8px;">Pickup instructions (private)</div>
-        <pre style="margin:0; white-space:pre-wrap; word-wrap:break-word; font-family:ui-monospace, Menlo, Consolas, monospace; font-size:12px;">
-            ${pickupInstructions || "No specific instructions provided."}
-        </pre>
+        <pre style="margin:0; white-space:pre-wrap; word-wrap:break-word; font-family:ui-monospace, Menlo, Consolas, monospace; font-size:12px;">${pickupInstructions || "No specific instructions provided."}</pre>
         <p style="margin:10px 0 0 0; font-size:12px; color:#475569;">
             Please do not forward publicly.
         </p>
