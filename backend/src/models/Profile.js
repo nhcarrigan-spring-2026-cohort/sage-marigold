@@ -1,5 +1,5 @@
-const pool = require('../config/db');
-
+const db = require('../config/db');
+const pool = db.pool;
 /**
  * Get user profile by ID
  * @param {string} userId - User UUID
