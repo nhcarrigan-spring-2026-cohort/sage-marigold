@@ -29,7 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<GuestOnlyRoute element={<Home />} />} />
 
-          <Route path="/explore" element={<ProtectedRoute element={<Explore />} />} />
+          <Route path="/explore" element={<Explore />} />
           <Route path="/donate" element={<ProtectedRoute element={<Donate />} />} />
 
           <Route path="/about" element={<About />} />

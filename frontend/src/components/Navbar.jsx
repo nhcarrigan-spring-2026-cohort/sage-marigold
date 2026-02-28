@@ -23,20 +23,19 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between sticky top-0 z-50 items-center py-4 px-8 bg-[#f5f5f5] shadow-md">
       <h1 className="text-2xl font-bold">
+        <Link
+          className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600"
+          to="/"
+        >
         <img
           src="/project_logo.png"
           alt="Sage Marigold Logo"
           className="h-12 w-12 inline mr-2"
         />
-        <Link
-          className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600"
-          to="/"
-        >
           HELPING HANDS
         </Link>
       </h1>
 
-      {/* Hamburger menu for mobile nav */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden flex flex-col gap-1 cursor-pointer"
@@ -82,6 +81,11 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="hover:border-b-2 hover:border-emerald-700">
+              <NavLink to="/explore" className={getLinkClass}>
+                Explore
+              </NavLink>
+            </li>
+            <li className="hover:border-b-2 hover:border-emerald-700">
               <NavLink to="/about" className={getLinkClass}>
                 About
               </NavLink>
@@ -103,7 +107,6 @@ const Navbar = () => {
         )}
       </ul>
 
-      {/* Mobile nav dropdown */}
       {isOpen && (
         <ul className="absolute top-16 left-0 w-full bg-gray-100 flex flex-col items-center text-xl gap-4 p-4 md:hidden z-10 shadow-lg">
           {loggedIn ? (
@@ -154,6 +157,15 @@ const Navbar = () => {
                   className={getLinkClass}
                 >
                   Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/explore"
+                  onClick={() => setIsOpen(false)}
+                  className={getLinkClass}
+                >
+                  Explore
                 </NavLink>
               </li>
               <li>

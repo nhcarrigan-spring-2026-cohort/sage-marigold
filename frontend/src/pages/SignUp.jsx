@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { HiArrowRight, HiCheck, HiX } from "react-icons/hi";
 import { ImSpinner2 } from "react-icons/im";
@@ -50,6 +51,7 @@ const AnimatedPanel = ({ id, children }) => {
 
 // Signin form
 const SignInForm = ({ onSwitch }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,7 +76,7 @@ const SignInForm = ({ onSwitch }) => {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Login failed");
       localStorage.setItem("token", result.token);
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -186,6 +188,7 @@ const SignInForm = ({ onSwitch }) => {
 
 // Signup form
 const SignUpForm = ({ onSwitch }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -195,6 +198,7 @@ const SignUpForm = ({ onSwitch }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -226,6 +230,8 @@ const SignUpForm = ({ onSwitch }) => {
       newErrors.confirmPassword = "Please confirm your password";
     else if (formData.password !== confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
+    if (!ageConfirmed)
+      newErrors.ageConfirmed = "You must confirm you are 18 or older to sign up";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -246,7 +252,7 @@ const SignUpForm = ({ onSwitch }) => {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Sign up failed");
       localStorage.setItem("token", result.token);
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       alert(err.message);
     } finally {
@@ -412,6 +418,29 @@ const SignUpForm = ({ onSwitch }) => {
               <p className="text-xs text-emerald-500 mt-1">Passwords match ✓</p>
             )}
           </div>
+        </div>
+
+        {/* Age confirmation checkbox */}
+        <div>
+          <label className="flex items-start gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={ageConfirmed}
+              onChange={(e) => {
+                setAgeConfirmed(e.target.checked);
+                if (e.target.checked)
+                  setErrors((prev) => ({ ...prev, ageConfirmed: "" }));
+              }}
+              className="mt-0.5 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 shrink-0"
+            />
+            <span className="text-xs text-gray-600 leading-relaxed">
+              I confirm that I am{" "}
+              <span className="font-semibold text-gray-800">18 years or older</span>
+            </span>
+          </label>
+          {errors.ageConfirmed && (
+            <p className="text-xs text-red-500 mt-1">{errors.ageConfirmed}</p>
+          )}
         </div>
 
         <button

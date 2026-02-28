@@ -1,6 +1,7 @@
 import SkeletonCard from "./SkeletonCard";
 import Filter from "./Filter";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
 import { FiAlertTriangle } from "react-icons/fi";
@@ -16,6 +17,16 @@ const ItemList = () => {
     location: "",
     search: "",
   });
+
+  const navigate = useNavigate();
+
+  const handleRequest = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/signup");
+    }
+
+  };
 
   useEffect(() => {
     const fetchDonations = async () => {
@@ -145,7 +156,7 @@ const ItemList = () => {
                 <SkeletonCard key={index} />
               ))
             : donations.map((donation) => (
-                <ItemCard key={donation.id} {...donation} />
+                <ItemCard key={donation.id} {...donation} onRequest={handleRequest} />
               ))}
         </div>
       )}
