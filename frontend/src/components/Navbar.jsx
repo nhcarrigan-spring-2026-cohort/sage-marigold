@@ -90,23 +90,19 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="hover:border-b-2 hover:border-emerald-700">
-              <NavLink to="/signup" className={getLinkClass}>
-                Login
-              </NavLink>
-            </li>
             <li>
               <NavLink
                 to="/signup"
                 className="bg-emerald-700 text-white px-4 py-2 rounded-lg hover:bg-emerald-800 transition-colors text-sm font-semibold"
               >
-                Sign Up
+                Sign Up / Login
               </NavLink>
             </li>
           </>
         )}
       </ul>
 
+      {/* Mobile nav dropdown */}
       {isOpen && (
         <ul className="absolute top-16 left-0 w-full bg-gray-100 flex flex-col items-center text-xl gap-4 p-4 md:hidden z-10 shadow-lg">
           {loggedIn ? (
@@ -183,7 +179,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className={getLinkClass}
                 >
-                  Login / Sign Up
+                  Sign Up / Login
                 </NavLink>
               </li>
             </>
