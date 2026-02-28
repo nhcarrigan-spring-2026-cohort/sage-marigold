@@ -1,12 +1,10 @@
-import { FaHeart, FaGithub, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="bg-emerald-900 text-emerald-50">
       <div className="max-w-6xl mx-auto px-6 py-16">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 text-center md:text-center">
           <div>
             <h3 className="text-2xl font-bold text-white mb-4">
               Helping Hands
@@ -14,6 +12,7 @@ const Footer = () => {
             <p className="text-emerald-200 leading-relaxed">
               A community-driven platform connecting people who want to give
               with those who truly need. Reducing waste. Building dignity.
+              Built with Love by the FreeCodeCamp Spring 2026 Cohort
             </p>
           </div>
 
@@ -31,19 +30,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
-          <div>
-            <div className="flex justify-center md:justify-start gap-5 text-xl">
-              <a href="https://github.com/nhcarrigan-spring-2026-cohort/sage-marigold"><FaGithub className="hover:text-white transition cursor-pointer" /></a>
-            </div>
-            <p className="mt-6 text-emerald-200 text-sm">
-              Built with <FaHeart className="inline text-red-400 mx-1" />
-              by the Sage Marigold team  
-              <br />
-              freeCodeCamp Spring 2026 Cohort
-            </p>
-          </div>
-
         </div>
 
         <div className="border-t border-emerald-700 mt-12 pt-6 text-center text-sm text-emerald-300">
