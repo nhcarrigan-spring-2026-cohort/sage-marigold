@@ -33,7 +33,20 @@ const createItem = async ({
 
 const getAllAvailableItems = async () => {
   const result = await pool.query(
-    `SELECT * FROM donation_items WHERE status = 'available' ORDER BY created_at DESC`
+    `SELECT
+      id,
+      title,
+      description,
+      category,
+      location,
+      condition,
+      images,
+      status,
+      donor_id,
+      created_at,
+      updated_at
+    FROM donation_items 
+    WHERE status = 'available' ORDER BY created_at DESC`
   );
   return result.rows;
 };
@@ -42,7 +55,19 @@ const getAllAvailableItems = async () => {
 
 const getAllItems = async () => {
   const result = await pool.query(
-    `SELECT * FROM donation_items ORDER BY created_at DESC`
+    `SELECT
+      id,
+      title,
+      description,
+      category,
+      location,
+      condition,
+      images,
+      status,
+      donor_id,
+      created_at,
+      updated_at
+    FROM donation_items ORDER BY created_at DESC`
   );
   return result.rows;
 };
@@ -63,7 +88,19 @@ const updateItemStatus = async (itemId, status) => {
  */
 const getItemById = async (itemId) => {
   const result = await pool.query(
-    `SELECT * FROM donation_items WHERE id = $1`,
+    `SELECT
+      id,
+      title,
+      description,
+      category,
+      location,
+      condition,
+      images,
+      status,
+      donor_id,
+      created_at,
+      updated_at
+    FROM donation_items WHERE id = $1`,
     [itemId]
   );
   return result.rows[0] || null;

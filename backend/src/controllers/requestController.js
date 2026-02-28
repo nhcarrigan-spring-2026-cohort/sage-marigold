@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const Request = require('../models/Request');
 const { response } = require('express');
+const { sendEmail } = require('../services/emailServices');
 
 const createRequest = async (req, res = response) => {
   const { item_id, application_data } = req.body;
@@ -107,7 +108,19 @@ const acceptRequest = async (req, res = response) => {
     await client.query('BEGIN'); // Start the transaction
 
     const requestCheck = await client.query(
-      'SELECT r.*, i.donor_id, i.status AS item_status FROM requests r JOIN donation_items i ON r.item_id=i.id WHERE r.id=$1 FOR UPDATE',
+      `SELECT 
+        r.*, 
+        i.donor_id, 
+        i.status AS item_status,
+        i.title AS item_name,
+        i.pickup_instructions AS pickup_instructions,
+        u_donor.email AS donor_email,
+        u_requester.email AS requester_email 
+      FROM requests r 
+      JOIN donation_items i ON r.item_id=i.id 
+      JOIN users u_donor ON i.donor_id=u_donor.id
+      JOIN users u_requester ON r.requester_id=u_requester.id
+      WHERE r.id=$1 FOR UPDATE`,
       [request_id]
     );
     if (requestCheck.rows.length === 0) {
@@ -169,6 +182,24 @@ const acceptRequest = async (req, res = response) => {
     );
 
     await client.query('COMMIT'); // Save everything
+
+    // Send emails to both parties
+
+    const emailSent = await sendEmail(
+      requestData.donor_email,
+      requestData.requester_email,
+      requestData.item_name,
+      requestData.pickup_instructions
+    );
+    
+    // Response if email sending fails, but the request acceptance was successful. We don't want to rollback the transaction just because of an email issue
+    if (!emailSent) {
+      return res.status(200).json({
+        ok: true,
+        message: 'Request accepted successfully, but there was an issue sending notification emails'
+      })
+    };
+
     return res.status(200).json({
       ok: true,
       message: 'Request accepted and others rejected successfully',

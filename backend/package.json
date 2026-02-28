@@ -23,6 +23,7 @@
     "express-validator": "^7.3.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
+    "nodemailer": "^8.0.1",
     "pg": "^8.18.0"
   },
   "type": "commonjs",
