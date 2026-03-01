@@ -5,9 +5,11 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 const Home = () => {
   return (
-    <section className="mx-auto text-center pt-8 px-4">
+    <div>
       <Hero />
-      <div className="mt-20 mb-12">
+
+      <section className="mx-auto text-center pt-8 px-4">
+        <div className="mt-20 mb-12">
         <h2 className="text-4xl text-center mb-4 font-bold text-emerald-700">
           How to Donate
         </h2>
@@ -16,7 +18,7 @@ const Home = () => {
           follow the instructions.
         </p>
       </div>
-      <div className="grid grid-cols-1 auto-rows-fr sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-center justify-center max-w-6xl">
+      <div className="grid grid-cols-1 auto-rows-fr sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 items-center justify-center max-w-6xl mx-auto">
         <div className="flex flex-col gap-1.5 h-full rounded-xl bg-emerald-50 border-2 border-emerald-200 p-4 justify-center items-center">
           <div className="w-12 rounded-lg bg-green-200 h-12 flex items-center justify-center ">
             <FaBoxOpen className="text-emerald-700" />
@@ -55,7 +57,8 @@ const Home = () => {
           </p>
         </div>
       </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

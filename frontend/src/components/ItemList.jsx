@@ -1,6 +1,7 @@
 import SkeletonCard from "./SkeletonCard";
 import Filter from "./Filter";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
 import { FiAlertTriangle } from "react-icons/fi";
@@ -17,6 +18,16 @@ const ItemList = () => {
     search: "",
   });
 
+  const navigate = useNavigate();
+
+  const handleRequest = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/signup");
+    }
+
+  };
+
   useEffect(() => {
     const fetchDonations = async () => {
       try {
@@ -24,14 +35,12 @@ const ItemList = () => {
         let allDonations = [];
 
         try {
-          // Use your Codespace URL
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/api/items/available`,
           );
 
           if (response.ok) {
             const data = await response.json();
-            //assign items from the form or use mock data as fall back
             allDonations =
               data.ok && data.items?.length > 0 ? data.items : mockDonations;
           } else {
@@ -115,7 +124,6 @@ const ItemList = () => {
       <Filter filters={filters} setFilters={setFilters} />
 
       {!loading && donations.length === 0 ? (
-        // Empty state when no results
         <div className="text-center py-16 px-4">
           <FaBoxOpen className="mx-auto text-6xl text-gray-300 mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -145,7 +153,7 @@ const ItemList = () => {
                 <SkeletonCard key={index} />
               ))
             : donations.map((donation) => (
-                <ItemCard key={donation.id} {...donation} />
+                <ItemCard key={donation.id} {...donation} onRequest={handleRequest} />
               ))}
         </div>
       )}
