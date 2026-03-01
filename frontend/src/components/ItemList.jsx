@@ -1,7 +1,8 @@
 import SkeletonCard from "./SkeletonCard";
 import Filter from "./Filter";
 import { useEffect, useState } from "react";
-//import { mockDonations } from "../data/mockDonations";
+import { useNavigate } from "react-router-dom";
+import { mockDonations } from "../data/mockDonations";
 import ItemCard from "./ItemCard";
 import { FiAlertTriangle } from "react-icons/fi";
 import { FaBoxOpen } from "react-icons/fa";
@@ -20,42 +21,37 @@ const ItemList = () => {
     search: "",
   });
 
-  const handleNearMeClick = () => {
-    setIsGeoLoading(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserCoords({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          });
-          setIsGeoLoading(false);
-        },
-        (geoError) => {
-          console.error("Geolocation error: ", geoError);
-          alert("Could not get your location. Please check your browser permissions (^_^)");
-          setIsGeoLoading(false);
-        }
-      );
+  const navigate = useNavigate();
+
+  const handleRequest = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/signup");
     }
-    else {
-      alert("Geolocation is not supported by your browser :( ");
-      setIsGeoLoading(false);
-    }
+
   };
 
   useEffect(() => {
     const fetchDonations = async () => {
       try {
         setLoading(true);
-        const params = new URLSearchParams();
-        if (filters.category) params.append("category", filters.category);
-        if (filters.condition) params.append("condition", filters.condition);
-        if (filters.search) params.append("search", filters.search);
-        if (filters.location) params.append("location", filters.location);
-        if (userCoords) {
-          params.append("lat", userCoords.lat);
-          params.append("lng", userCoords.lng);
+        let allDonations = [];
+
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/items/available`,
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            allDonations =
+              data.ok && data.items?.length > 0 ? data.items : mockDonations;
+          } else {
+            allDonations = mockDonations;
+          }
+        } catch (fetchError) {
+          console.warn("Backend unavailable, using mock data", fetchError);
+          allDonations = mockDonations;
         }
 
 
@@ -184,8 +180,8 @@ const ItemList = () => {
               <SkeletonCard key={index} />
             ))
             : donations.map((donation) => (
-              <ItemCard key={donation.id} {...donation} />
-            ))}
+                <ItemCard key={donation.id} {...donation} onRequest={handleRequest} />
+              ))}
         </div>
       )}
     </>

@@ -24,15 +24,15 @@ const Navbar = () => {
     <nav className="flex justify-between sticky top-0 z-50 items-center py-4 px-8 bg-[#f5f5f5] shadow-md">
       <h1 className="text-2xl font-bold">
         <Link
-          className="hidden md:inline text-emerald-700 text-xl font-cursive! hover:text-gray-600"
+          className="flex items-center text-emerald-700 text-xl font-cursive! hover:text-gray-600"
           to="/"
         >
-        <img
-          src="/project_logo.png"
-          alt="Sage Marigold Logo"
-          className="h-12 w-12 inline mr-2"
-        />
-          HELPING HANDS
+          <img
+            src="/project_logo.png"
+            alt="Sage Marigold Logo"
+            className="h-12 w-12 mr-2"
+          />
+          <span className="hidden md:inline">HELPING HANDS</span>
         </Link>
       </h1>
 
