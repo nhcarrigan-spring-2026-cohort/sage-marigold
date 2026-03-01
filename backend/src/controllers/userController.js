@@ -5,7 +5,7 @@ const getUserProfile = async (req, res = response) => {
   const currentUser_id = req.user.id;
   try {
     const result = await db.query(
-      'SELECT full_name, email, location_address FROM users WHERE id=$1',
+      'SELECT full_name, email, location_address FROM users WHERE id=$1 AND is_anonymized = FALSE',
       [currentUser_id]
     );
     const user = result.rows[0];
@@ -32,6 +32,14 @@ const getUserProfile = async (req, res = response) => {
 const getUserActivity = async (req, res = response) => {
   const currentUser_id = req.user.id;
   try {
+    const userCheck = await db.query('SELECT is_anonymized FROM users WHERE id=$1', [currentUser_id]);
+    
+    if (!userCheck.rows[0] || userCheck.rows[0].is_anonymized) {
+      return res.status(404).json({
+        ok: false,
+        message: 'User account not found or deleted',
+      });
+    }
     const donationsResult = await db.query(
       `SELECT id, title, status, created_at, 
       (SELECT COUNT(*)::int FROM requests r WHERE r.item_id=i.id AND r.status='pending') AS pending_request_count 
